@@ -9,13 +9,13 @@ function getRandomInteger(min, max) {
     console.error('Ошибка: Минимальное и максимальное значения должны быть числами:\nmin = %s\nmax = %s', min, max);
   }
   else if(min == max) {
-    console.error('Ошибка: Минимальное значения не должно быть равно максимальному:\nmin = %s\nmax = %s', min, max);
+    console.error('Ошибка: Минимальное значение не должно быть равно максимальному:\nmin = %s\nmax = %s', min, max);
   }
   else if (min < 0 || max < 0) {
     console.error('Ошибка: Минимальное и максимальное значения должны быть положительными или раными нулю:\nmin = %s\nmax = %s', min, max);
   }
   else if(min > max) {
-    console.error('Ошибка: Минимальное значения больше максимального:\nmin = %s\nmax = %s', min, max);
+    console.error('Ошибка: Минимальное значение больше максимального:\nmin = %s\nmax = %s', min, max);
   }
   else {
     return Math.floor(min + Math.random() * (max + 1 - min));
