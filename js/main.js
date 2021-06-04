@@ -3,7 +3,6 @@
 /* eslint-disable prefer-template */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-const MAX_COMMENT_LENGHT = 140;
 const PHOTO_COUNT = 25;
 
 const COMMENTS = [
