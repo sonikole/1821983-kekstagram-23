@@ -75,24 +75,23 @@ const getRandomInteger = (min, max) => {
 /* Функция для проверки максимальной длины строки. */
 const checkMaxLength = (line, maxLength) => line.length <= maxLength;
 
-/* Функция для теста сообщения (склейка 1го или 2х значений из массива COMMENTS) */
-const generateMessage = () => {
-  const result = [];
-  for (let j = 1; j <= getRandomInteger(1, 2); j++) {
-    result.push(COMMENTS[getRandomInteger(0, COMMENTS.length - 1)]);
-  }
-  return result.join(' ');
-};
-
 /* Функция для генерации комментариев к фотографии */
 const generateComment = (count) => {
   const comments = [];
+
+  const getMessage = function () {
+    const result = [];
+    for (let j = 1; j <= getRandomInteger(1, 2); j++) {
+      result.push(COMMENTS[getRandomInteger(0, COMMENTS.length - 1)]);
+    }
+    return result.join(' ');
+  };
 
   for (let i = 1; i <= count; i++) {
     comments.push({
       id: i,
       avatar: 'img/avatar-' + getRandomInteger(0, 6) + '.svg',
-      message: generateMessage(),
+      message: getMessage(),
       name: NAMES[getRandomInteger(0, NAMES.length - 1)] + ' ' + SURNAMES[getRandomInteger(0, SURNAMES.length - 1)],
     });
   }
