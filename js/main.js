@@ -7,6 +7,8 @@ const overlay = document.querySelector('.img-upload__overlay');
 const img = picture.querySelector('img');
 const effects = document.querySelectorAll('input[name="effect"]');
 
+
+/* Редактирования изображения: выбор изображения из файла  */
 window.addEventListener('load', () => {
   document.querySelector('input[type="file"]').addEventListener('change', function () {
     const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -26,8 +28,23 @@ window.addEventListener('load', () => {
 });
 
 
+/* Редактирования изображения: сброс эффекта  */
+const removeEffectsPreview = () => {
+  //Удаляем старый класс эффекта на изображении
+  for (const effectValue of document.querySelectorAll('.effects__radio')) {
+    picture.classList.remove(`effects__preview--${effectValue.value}`);
+  }
+};
+
+
+/* Редактирования изображения: закрытие модалки */
 cancelOnClick.addEventListener('click', () => {
   overlay.classList.add('hidden');
+
+  //TODO: Сбросить фильтр и настройки
+  removeEffectsPreview();
+
+  document.querySelector('input[value="none"]').click;
 
   img.onload = () => {
     URL.revokeObjectURL(img.src);
@@ -38,13 +55,11 @@ cancelOnClick.addEventListener('click', () => {
 });
 
 
+/* Редактирования изображения: выбор эффекта */
 for (let i = 0; i < effects.length; i++) {
   effects[i].addEventListener('change', function () {
 
-    //Удаляем старый класс эффекта на изображении
-    for (const effectValue of document.querySelectorAll('.effects__radio')) {
-      picture.classList.remove(`effects__preview--${effectValue.value}`);
-    }
+    removeEffectsPreview();
 
     picture.classList.add(`effects__preview--${this.value}`);
   });
