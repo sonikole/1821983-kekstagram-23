@@ -2,7 +2,7 @@ import { generatePhotos } from './data.js';
 
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
-const cancelOnClick = document.querySelector('.cancel');
+const cancel = document.querySelector('.cancel');
 const picture = document.querySelector('.img-upload__preview');
 const overlay = document.querySelector('.img-upload__overlay');
 const img = picture.querySelector('img');
@@ -33,20 +33,20 @@ window.addEventListener('load', () => {
 /* Редактирование изображения:
 сброс эффекта  */
 const removeEffectsPreview = () => {
-  for (const effectValue of document.querySelectorAll('.effects__radio')) {
-    picture.classList.remove(`effects__preview--${effectValue.value}`);
-  }
+  document.querySelectorAll('.effects__radio').forEach((item) => {
+    picture.classList.remove(`effects__preview--${item.value}`);
+  });
 };
 
 
 /* Редактирование изображения:
 закрытие модалки */
-cancelOnClick.addEventListener('click', () => {
+cancel.addEventListener('click', () => {
   overlay.classList.add('hidden');
 
   removeEffectsPreview();
 
-  document.querySelector('input[value="none"]').click;
+  effects.querySelector('[value="none"]').click;
 
   img.onload = () => {
     URL.revokeObjectURL(img.src);
@@ -67,3 +67,36 @@ for (let i = 0; i < effects.length; i++) {
     picture.classList.add(`effects__preview--${this.value}`);
   });
 }
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const scaleControlValue = document.querySelector('.scale__control--value');
+
+const checkValueInScaleControl = (type) => {
+  let value = parseInt(scaleControlValue.value, 10);
+
+  switch (type) {
+    case 'sum':
+      value += 25;
+      break;
+
+    case 'minus':
+      value -= 25;
+      break;
+  }
+
+  scaleControlValue.value = `${value}%`;
+
+  scaleControlBigger.disabled = !(value < 100);
+  scaleControlSmaller.disabled = !(value > 0);
+};
+
+
+scaleControlBigger.addEventListener('click', () => {
+  checkValueInScaleControl('sum');
+
+});
+
+scaleControlSmaller.addEventListener('click', () => {
+  checkValueInScaleControl('minus');
+});
