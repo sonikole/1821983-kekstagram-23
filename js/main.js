@@ -1,6 +1,7 @@
 import { generatePhotos } from './data.js';
 
-//FIXME: Поменять на верхний регистр.
+//FIXME: Поменять наименования в соответствии с критериями.
+//TODO: Раскидать по модулям
 const cancelOnClick = document.querySelector('.cancel');
 const picture = document.querySelector('.img-upload__preview');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -8,7 +9,8 @@ const img = picture.querySelector('img');
 const effects = document.querySelectorAll('input[name="effect"]');
 
 
-/* Редактирования изображения: выбор изображения из файла  */
+/* Редактирование изображения:
+выбор изображения из файла  */
 window.addEventListener('load', () => {
   document.querySelector('input[type="file"]').addEventListener('change', function () {
     const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -28,20 +30,20 @@ window.addEventListener('load', () => {
 });
 
 
-/* Редактирования изображения: сброс эффекта  */
+/* Редактирование изображения:
+сброс эффекта  */
 const removeEffectsPreview = () => {
-  //Удаляем старый класс эффекта на изображении
   for (const effectValue of document.querySelectorAll('.effects__radio')) {
     picture.classList.remove(`effects__preview--${effectValue.value}`);
   }
 };
 
 
-/* Редактирования изображения: закрытие модалки */
+/* Редактирование изображения:
+закрытие модалки */
 cancelOnClick.addEventListener('click', () => {
   overlay.classList.add('hidden');
 
-  //TODO: Сбросить фильтр и настройки
   removeEffectsPreview();
 
   document.querySelector('input[value="none"]').click;
@@ -55,7 +57,8 @@ cancelOnClick.addEventListener('click', () => {
 });
 
 
-/* Редактирования изображения: выбор эффекта */
+/* Редактирование изображения:
+выбор эффекта */
 for (let i = 0; i < effects.length; i++) {
   effects[i].addEventListener('change', function () {
 
