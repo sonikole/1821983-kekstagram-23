@@ -88,7 +88,7 @@ const checkValueInScaleControl = (type) => {
   scaleControlValue.value = `${value}%`;
 
   scaleControlBigger.disabled = !(value < 100);
-  scaleControlSmaller.disabled = !(value > 0);
+  scaleControlSmaller.disabled = !(value > 25);
 };
 
 
