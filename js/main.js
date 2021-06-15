@@ -9,8 +9,6 @@ const img = picture.querySelector('img');
 const effects = document.querySelectorAll('input[name="effect"]');
 
 
-
-
 /* Редактирование изображения:
 сброс эффекта  */
 const removeEffectsPreview = () => {
@@ -71,6 +69,7 @@ const checkValueInScaleControl = (type = null) => {
       break;
   }
 
+  img.style = `transform: scale(${value / 100})`;
   scaleControlValue.value = `${value}%`;
 
   scaleControlBigger.disabled = !(value < 100);
