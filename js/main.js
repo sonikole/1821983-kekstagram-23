@@ -9,25 +9,6 @@ const img = picture.querySelector('img');
 const effects = document.querySelectorAll('input[name="effect"]');
 
 
-/* Редактирование изображения:
-выбор изображения из файла  */
-window.addEventListener('load', () => {
-  document.querySelector('input[type="file"]').addEventListener('change', function () {
-    const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
-
-    img.onload = () => {
-      URL.revokeObjectURL(img.src);
-    };
-
-    if (ACCEPT.indexOf(this.files[0].type) !== -1) {
-      img.src = URL.createObjectURL(this.files[0]);
-      overlay.classList.remove('hidden');
-    }
-    else {
-      //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
-    }
-  });
-});
 
 
 /* Редактирование изображения:
@@ -68,11 +49,12 @@ for (let i = 0; i < effects.length; i++) {
   });
 }
 
+
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 
-const checkValueInScaleControl = (type) => {
+const checkValueInScaleControl = (type = null) => {
   let value = parseInt(scaleControlValue.value, 10);
 
   switch (type) {
@@ -83,6 +65,10 @@ const checkValueInScaleControl = (type) => {
     case 'minus':
       value -= 25;
       break;
+
+    default:
+      value = 100;
+      break;
   }
 
   scaleControlValue.value = `${value}%`;
@@ -92,11 +78,38 @@ const checkValueInScaleControl = (type) => {
 };
 
 
+/* Редактирование изображения:
+увеличение масштаба  */
 scaleControlBigger.addEventListener('click', () => {
   checkValueInScaleControl('sum');
 
 });
 
+/* Редактирование изображения:
+уменьшение масштаба  */
 scaleControlSmaller.addEventListener('click', () => {
   checkValueInScaleControl('minus');
+});
+
+
+/* Редактирование изображения:
+выбор изображения из файла  */
+window.addEventListener('load', () => {
+  document.querySelector('input[type="file"]').addEventListener('change', function () {
+    const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
+
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);
+    };
+
+    if (ACCEPT.indexOf(this.files[0].type) !== -1) {
+      img.src = URL.createObjectURL(this.files[0]);
+
+      checkValueInScaleControl();
+      overlay.classList.remove('hidden');
+    }
+    else {
+      //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
+    }
+  });
 });
