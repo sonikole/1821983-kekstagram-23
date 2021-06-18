@@ -1,4 +1,4 @@
-import {generatePhotos} from './data.js';
+import { generateUsersPictures } from './generateDatas.js';
 
-const photos = generatePhotos(10);
-photos;
+const PHOTOS_COUNT = 21;
+generateUsersPictures(PHOTOS_COUNT);
