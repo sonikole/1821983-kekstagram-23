@@ -59,10 +59,10 @@ const generateComment = (count) => {
     return result.join(' ');
   };
 
-  for (let i = 1; i <= count; i++) {
+  for (let index = 1; index <= count; index++) {
     comments.push({
-      id: i,
-      avatar: `img/avatar-${  getRandomInteger(0, 6)  }.svg`,
+      id: index,
+      avatar: `img/avatar-${  getRandomInteger(1, 6)  }.svg`,
       message: getMessage(),
       name: `${NAMES[getRandomInteger(0, NAMES.length - 1)]  } ${  SURNAMES[getRandomInteger(0, SURNAMES.length - 1)]}`,
     });
@@ -74,10 +74,10 @@ const generateComment = (count) => {
 const generatePhotos = (PHOTO_COUNT) => {
   const photos = [];
 
-  for (let i = 1; i <= PHOTO_COUNT; i++) {
+  for (let index = 1; index <= PHOTO_COUNT; index++) {
     photos.push({
-      id: i,
-      url: `photos/${  i  }.jpg`,
+      id: index,
+      url: `photos/${  index  }.jpg`,
       description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
       likes: getRandomInteger(15, 200),
       comments: generateComment(getRandomInteger(1, 15)),
