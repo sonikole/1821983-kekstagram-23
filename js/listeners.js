@@ -4,7 +4,7 @@ import { PHOTOS } from './main.js';
 const pictures = document.querySelector('.pictures').children;
 const bigPicture = document.querySelector('.big-picture');
 const bigImg = document.querySelector('.big-picture__img').querySelector('img');
-const bigImglikes = document.querySelector('.likes-count');
+const bigImgLikes = document.querySelector('.likes-count');
 const bigImgInfo = document.querySelector('.social__header');
 const commentsListCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -76,7 +76,7 @@ const showFullPicture = (picture) => {
 
     bigImg.src = values.url;
     bigImg.alt = values.description;
-    bigImglikes.textContent = values.likes;
+    bigImgLikes.textContent = values.likes;
     bigImgInfo.querySelector('.social__caption').textContent = values.description;
 
     showComments(values.comments);
