@@ -8,11 +8,11 @@ const generateUsersPictures = (PHOTOS_COUNT) => {
 
   const container = document.querySelector('.pictures');
 
-  for (let i = 0; i < photos.length; i++) {
+  for (let index = 0; index < photos.length; index++) {
     const clonedElement = element.cloneNode(true);
-    clonedElement.querySelector('.picture__img').src = photos[i].url;
-    clonedElement.querySelector('.picture__comments').textContent = photos[i].comments.length;
-    clonedElement.querySelector('.picture__likes').textContent = photos[i].likes;
+    clonedElement.querySelector('.picture__img').src = photos[index].url;
+    clonedElement.querySelector('.picture__comments').textContent = photos[index].comments.length;
+    clonedElement.querySelector('.picture__likes').textContent = photos[index].likes;
     container.appendChild(clonedElement);
   }
 };
