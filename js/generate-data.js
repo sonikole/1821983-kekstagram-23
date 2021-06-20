@@ -1,6 +1,6 @@
 import { showFullPicture } from './listeners.js';
 
-/* Функция для добавлении фотографий других пользователей на главнй экран */
+/* Функция для добавления фотографий других пользователей на главный экран */
 const generateUsersPictures = (photos) => {
 
   const containerElement = document.querySelector('.pictures');
