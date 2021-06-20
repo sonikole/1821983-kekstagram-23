@@ -1,37 +1,28 @@
 import { PHOTOS } from './main.js';
+const ESCAPE = 27;
 
 //TODO: Будут использоваться в других методах
-const pictures = document.querySelector('.pictures').children;
 const bigPicture = document.querySelector('.big-picture');
-const bigImg = document.querySelector('.big-picture__img').querySelector('img');
+const bigImg = bigPicture.querySelector('img');
 const bigImgLikes = document.querySelector('.likes-count');
 const bigImgInfo = document.querySelector('.social__header');
 const commentsListCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const commentsList = document.querySelector('.social__comments');
-const closeBigImg = document.getElementById('picture-cancel');
+const closeButton = document.querySelector('#picture-cancel');
 
 //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
 let maxCommentsCount = 5;
 
-closeBigImg.addEventListener('click', () => {
+/* Функция для закрытия большой фотографии  */
+const closeModalBigImg = () => {
   maxCommentsCount = 5;
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-});
-
-document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
-    if (!bigPicture.classList.contains('.hidden')) {
-      maxCommentsCount = 5;
-      bigPicture.classList.add('hidden');
-      document.body.classList.remove('modal-open');
-    }
-  }
-
-});
-
+  closeButton.removeEventListener('click', closeModalBigImg);
+  document.removeEventListener('keydown', closeModalBigImg);
+};
 
 /* Функция для добавления комментариев других пользователей под открытую фотографию */
 const showComments = (comments) => {
@@ -74,6 +65,7 @@ const showFullPicture = (picture) => {
 
     document.body.classList.add('modal-open');
 
+    bigPicture.classList.remove('hidden');
     bigImg.src = values.url;
     bigImg.alt = values.description;
     bigImgLikes.textContent = values.likes;
@@ -81,13 +73,17 @@ const showFullPicture = (picture) => {
 
     showComments(values.comments);
 
-    bigPicture.classList.remove('hidden');
+    //add Listeners
+    closeButton.addEventListener('click', closeModalBigImg);
 
+    document.addEventListener('keydown', (evt) => {
+      if (evt.keyCode === ESCAPE) {
+        if (!bigPicture.classList.contains('.hidden')) {
+          closeModalBigImg();
+        }
+      }
+    });
   });
 };
-
-for (let index = 0; index < pictures.length; index++) {
-  showFullPicture(pictures[index]);
-}
 
 export { showFullPicture };

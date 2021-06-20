@@ -3,9 +3,9 @@ import { showFullPicture } from './listeners.js';
 /* Функция для добавлении фотографий других пользователей на главнй экран */
 const generateUsersPictures = (photos) => {
 
-  const template = document.getElementById('picture');
-  const element = template.content.querySelector('.picture');
   const container = document.querySelector('.pictures');
+  const template = document.querySelector('#picture');
+  const element = template.content.querySelector('.picture');
 
   for (let index = 0; index < photos.length; index++) {
     const clonedElement = element.cloneNode(true);

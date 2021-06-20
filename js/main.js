@@ -1,5 +1,5 @@
 import { generatePhotos } from './data.js';
-import { generateUsersPictures } from './generateData.js';
+import { generateUsersPictures } from './generate-data.js';
 
 
 const PHOTOS_COUNT = 21;
