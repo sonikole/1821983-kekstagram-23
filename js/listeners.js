@@ -2,14 +2,14 @@ import { PHOTOS } from './main.js';
 const ESCAPE = 27;
 
 //TODO: Будут использоваться в других методах
-const bigPicture = document.querySelector('.big-picture');
-const bigImg = bigPicture.querySelector('img');
-const bigImgLikes = document.querySelector('.likes-count');
-const bigImgInfo = document.querySelector('.social__header');
-const commentsListCount = document.querySelector('.social__comment-count');
-const commentsLoader = document.querySelector('.comments-loader');
-const commentsList = document.querySelector('.social__comments');
-const closeButton = document.querySelector('#picture-cancel');
+const bigPictureElement = document.querySelector('.big-picture');
+const bigImgElement = bigPictureElement.querySelector('img');
+const bigImgLikesElement = document.querySelector('.likes-count');
+const bigImgInfoElement = document.querySelector('.social__header');
+const commentsListCountElement = document.querySelector('.social__comment-count');
+const commentsLoaderElement = document.querySelector('.comments-loader');
+const commentsListElement = document.querySelector('.social__comments');
+const closeButtonElement = document.querySelector('#picture-cancel');
 
 //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
 let maxCommentsCount = 5;
@@ -17,10 +17,10 @@ let maxCommentsCount = 5;
 /* Функция для закрытия большой фотографии  */
 const closeModalBigImg = () => {
   maxCommentsCount = 5;
-  bigPicture.classList.add('hidden');
+  bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  closeButton.removeEventListener('click', closeModalBigImg);
+  closeButtonElement.removeEventListener('click', closeModalBigImg);
   document.removeEventListener('keydown', closeModalBigImg);
 };
 
@@ -29,11 +29,11 @@ const showComments = (comments) => {
   const count = Object.keys(comments).length;
   const maxCount = count < maxCommentsCount ? count : maxCommentsCount;
 
-  commentsList.innerHTML = '';
+  commentsListElement.innerHTML = '';
 
   //TODO: По ТЗ должна быть реализация. в ДЗ пока выключено
-  commentsListCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
+  commentsListCountElement.classList.add('hidden');
+  commentsLoaderElement.classList.add('hidden');
 
   for (let index = 0; index < maxCount; index++) {
 
@@ -53,7 +53,7 @@ const showComments = (comments) => {
 
     li.appendChild(img);
     li.appendChild(p);
-    commentsList.appendChild(li);
+    commentsListElement.appendChild(li);
   }
 };
 
@@ -65,20 +65,20 @@ const showFullPicture = (picture) => {
 
     document.body.classList.add('modal-open');
 
-    bigPicture.classList.remove('hidden');
-    bigImg.src = values.url;
-    bigImg.alt = values.description;
-    bigImgLikes.textContent = values.likes;
-    bigImgInfo.querySelector('.social__caption').textContent = values.description;
+    bigPictureElement.classList.remove('hidden');
+    bigImgElement.src = values.url;
+    bigImgElement.alt = values.description;
+    bigImgLikesElement.textContent = values.likes;
+    bigImgInfoElement.querySelector('.social__caption').textContent = values.description;
 
     showComments(values.comments);
 
     //add Listeners
-    closeButton.addEventListener('click', closeModalBigImg);
+    closeButtonElement.addEventListener('click', closeModalBigImg);
 
     document.addEventListener('keydown', (evt) => {
       if (evt.keyCode === ESCAPE) {
-        if (!bigPicture.classList.contains('.hidden')) {
+        if (!bigPictureElement.classList.contains('.hidden')) {
           closeModalBigImg();
         }
       }
