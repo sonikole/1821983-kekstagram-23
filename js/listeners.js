@@ -86,4 +86,5 @@ const showFullPicture = (picture) => {
   });
 };
 
+
 export { showFullPicture };
