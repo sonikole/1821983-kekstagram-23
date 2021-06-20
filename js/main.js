@@ -1,7 +1,12 @@
+import { generatePhotos } from './data.js';
+import { generateUsersPictures } from './generate-data.js';
 import { generateUsersPictures } from './generateData.js';
 import { generatePhotos } from './data.js';
 
+
 const PHOTOS_COUNT = 21;
+const PHOTOS = generatePhotos(PHOTOS_COUNT);
+generateUsersPictures(PHOTOS);
 generateUsersPictures(PHOTOS_COUNT);
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
@@ -10,6 +15,9 @@ const picture = document.querySelector('.img-upload__preview');
 const overlay = document.querySelector('.img-upload__overlay');
 const img = picture.querySelector('img');
 const effects = document.querySelectorAll('input[name="effect"]');
+
+export { PHOTOS };
+
 
 
 /* Редактирование изображения:
