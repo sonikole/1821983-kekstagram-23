@@ -1,5 +1,8 @@
+import { generateUsersPictures } from './generateData.js';
 import { generatePhotos } from './data.js';
 
+const PHOTOS_COUNT = 21;
+generateUsersPictures(PHOTOS_COUNT);
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const cancel = document.querySelector('.cancel');
