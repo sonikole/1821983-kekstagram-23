@@ -99,11 +99,9 @@ const loadNewPicture = (evt) => {
   const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
   const file = evt.target.files[0];
 
-  URL.createObjectURL(file);
-  URL.revokeObjectURL(file);
-
   if (ACCEPT.indexOf(file.type) !== -1) {
     newImgElement.src = URL.createObjectURL(file);
+    URL.revokeObjectURL(file);
     scaleControlBiggerElement.disabled = true;
     newImgOverlayElement.classList.remove('hidden');
 
