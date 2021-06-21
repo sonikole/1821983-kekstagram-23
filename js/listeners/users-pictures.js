@@ -1,4 +1,4 @@
-import { PHOTOS } from './main.js';
+import { PHOTOS } from '../main.js';
 const ESCAPE = 27;
 
 //TODO: Будут использоваться в других методах
@@ -6,30 +6,34 @@ const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
 const bigImgInfoElement = document.querySelector('.social__header');
+
 const commentsListCountElement = document.querySelector('.social__comment-count');
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
-const closeButtonElement = document.querySelector('.cancel');
 
-//TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
-let maxCommentsCount = 5;
+const closeBigImgButtonElement = document.querySelector('#picture-cancel');
 
-/* Функция для закрытия большой фотографии  */
-const closeModalBigImg = (evt) => {
+let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
+
+/* Просмотр фотографии:
+закрытие модалки */
+const closeModal = (evt) => {
   if (evt.keyCode === ESCAPE || evt.keyCode === undefined) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
       document.body.classList.remove('modal-open');
       maxCommentsCount = 5;
 
-      closeButtonElement.removeEventListener('click', closeModalBigImg);
-      document.removeEventListener('keydown', closeModalBigImg);
+      closeBigImgButtonElement.removeEventListener('click', closeModal);
+      document.removeEventListener('keydown', closeModal);
     }
   }
 };
 
-/* Функция для добавления комментариев других пользователей под открытую фотографию */
-const showComments = (comments) => {
+
+/* Просмотр фотографии:
+добавление комментариев других пользователей */
+const loadCommentsForBigPicture = (comments) => {
   const count = Object.keys(comments).length;
   const maxCount = count < maxCommentsCount ? count : maxCommentsCount;
 
@@ -62,7 +66,9 @@ const showComments = (comments) => {
 };
 
 
-const showPicture = (evt) => {
+/* Просмотр фотографии:
+открытие большой фотографии */
+const openBigPicture = (evt) => {
 
   const values = PHOTOS[evt.currentTarget.getAttribute('id')];
 
@@ -74,17 +80,17 @@ const showPicture = (evt) => {
   bigImgLikesElement.textContent = values.likes;
   bigImgInfoElement.querySelector('.social__caption').textContent = values.description;
 
-  showComments(values.comments);
+  loadCommentsForBigPicture(values.comments);
 
   //add Listeners
-  closeButtonElement.addEventListener('click', closeModalBigImg);
-  document.addEventListener('keydown', closeModalBigImg);
+  closeBigImgButtonElement.addEventListener('click', closeModal);
+  document.addEventListener('keydown', closeModal);
 
 };
 
-/* Функция для открытия большой фотографии  */
+
 const showFullPicture = (picture) => {
-  picture.addEventListener('click', showPicture);
+  picture.addEventListener('click', openBigPicture);
 };
 
 
