@@ -12,7 +12,6 @@ const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
 const closeBigImgButtonElement = document.querySelector('#picture-cancel');
-
 let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
 
 /* Просмотр фотографии:

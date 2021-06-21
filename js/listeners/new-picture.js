@@ -1,13 +1,12 @@
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newFileElement = document.querySelector('input[type="file"]');
+const effectsElement = document.querySelectorAll('input[name="effect"]');
+const closeNewImgButtonElement = document.querySelector('#upload-cancel');
 
-const newImgCloseButtonElement = document.querySelector('#upload-cancel');
 const newImgPreviewElement = document.querySelector('.img-upload__preview');
 const newImgOverlayElement = document.querySelector('.img-upload__overlay');
 const newImgElement = newImgPreviewElement.querySelector('img');
-
-const effectsElement = document.querySelectorAll('input[name="effect"]');
 
 const scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 const scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
@@ -90,7 +89,7 @@ const closeModal = () => {
   discardChanges();
 
   /* закрытие модалки */
-  newImgCloseButtonElement.removeEventListener('click', closeModal);
+  closeNewImgButtonElement.removeEventListener('click', closeModal);
 };
 
 
@@ -118,7 +117,7 @@ const loadNewPicture = (evt) => {
     });
 
     /* закрытие модалки */
-    newImgCloseButtonElement.addEventListener('click', closeModal);
+    closeNewImgButtonElement.addEventListener('click', closeModal);
   }
   else {
     //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
