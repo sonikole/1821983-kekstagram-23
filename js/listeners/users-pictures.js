@@ -1,5 +1,4 @@
 import { PHOTOS } from '../main.js';
-const ESCAPE = 27;
 
 //TODO: Будут использоваться в других методах
 const bigPictureElement = document.querySelector('.big-picture');
@@ -17,7 +16,7 @@ let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ дол�
 /* Просмотр фотографии:
 закрытие модалки */
 const closeModal = (evt) => {
-  if (evt.keyCode === ESCAPE || evt.keyCode === undefined) {
+  if (evt.key === 'Escape' || evt.currentTarget === closeBigImgButtonElement) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
       document.body.classList.remove('modal-open');
