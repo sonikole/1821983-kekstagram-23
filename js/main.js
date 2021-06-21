@@ -7,7 +7,6 @@ const PHOTOS = generatePhotos(PHOTOS_COUNT);
 generateUsersPictures(PHOTOS);
 
 
-
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const cancel = document.querySelector('.cancel');

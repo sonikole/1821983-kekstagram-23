@@ -9,19 +9,23 @@ const bigImgInfoElement = document.querySelector('.social__header');
 const commentsListCountElement = document.querySelector('.social__comment-count');
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
-const closeButtonElement = document.querySelector('#picture-cancel');
+const closeButtonElement = document.querySelector('.cancel');
 
 //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
 let maxCommentsCount = 5;
 
 /* Функция для закрытия большой фотографии  */
-const closeModalBigImg = () => {
-  maxCommentsCount = 5;
-  bigPictureElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+const closeModalBigImg = (evt) => {
+  if (evt.keyCode === ESCAPE || evt.keyCode === undefined) {
+    if (!bigPictureElement.classList.contains('.hidden')) {
+      bigPictureElement.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      maxCommentsCount = 5;
 
-  closeButtonElement.removeEventListener('click', closeModalBigImg);
-  document.removeEventListener('keydown', closeModalBigImg);
+      closeButtonElement.removeEventListener('click', closeModalBigImg);
+      document.removeEventListener('keydown', closeModalBigImg);
+    }
+  }
 };
 
 /* Функция для добавления комментариев других пользователей под открытую фотографию */
@@ -57,33 +61,30 @@ const showComments = (comments) => {
   }
 };
 
+
+const showPicture = (evt) => {
+
+  const values = PHOTOS[evt.currentTarget.getAttribute('id')];
+
+  document.body.classList.add('modal-open');
+
+  bigPictureElement.classList.remove('hidden');
+  bigImgElement.src = values.url;
+  bigImgElement.alt = values.description;
+  bigImgLikesElement.textContent = values.likes;
+  bigImgInfoElement.querySelector('.social__caption').textContent = values.description;
+
+  showComments(values.comments);
+
+  //add Listeners
+  closeButtonElement.addEventListener('click', closeModalBigImg);
+  document.addEventListener('keydown', closeModalBigImg);
+
+};
+
 /* Функция для открытия большой фотографии  */
 const showFullPicture = (picture) => {
-  picture.addEventListener('click', () => {
-
-    const values = PHOTOS[picture.getAttribute('id')];
-
-    document.body.classList.add('modal-open');
-
-    bigPictureElement.classList.remove('hidden');
-    bigImgElement.src = values.url;
-    bigImgElement.alt = values.description;
-    bigImgLikesElement.textContent = values.likes;
-    bigImgInfoElement.querySelector('.social__caption').textContent = values.description;
-
-    showComments(values.comments);
-
-    //add Listeners
-    closeButtonElement.addEventListener('click', closeModalBigImg);
-
-    document.addEventListener('keydown', (evt) => {
-      if (evt.keyCode === ESCAPE) {
-        if (!bigPictureElement.classList.contains('.hidden')) {
-          closeModalBigImg();
-        }
-      }
-    });
-  });
+  picture.addEventListener('click', showPicture);
 };
 
 
