@@ -14,7 +14,7 @@ const generateUsersPictures = (photos) => {
     clonedElement.querySelector('.picture__img').alt = photos[index].description;
     clonedElement.querySelector('.picture__comments').textContent = photos[index].comments.length;
     clonedElement.querySelector('.picture__likes').textContent = photos[index].likes;
-    showFullPicture(clonedElement);
+
     containerElement.appendChild(clonedElement);
   }
 };

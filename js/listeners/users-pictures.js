@@ -1,6 +1,8 @@
 import { PHOTOS } from '../main.js';
 
 //TODO: Будут использоваться в других методах
+const picturesListElement = document.querySelector('.pictures');
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
@@ -66,9 +68,9 @@ const loadCommentsForBigPicture = (comments) => {
 
 /* Просмотр фотографии:
 открытие большой фотографии */
-const openBigPicture = (evt) => {
+const openBigPicture = (picture) => {
 
-  const values = PHOTOS[evt.currentTarget.getAttribute('id')];
+  const values = PHOTOS[picture.getAttribute('id')];
 
   document.body.classList.add('modal-open');
 
@@ -87,9 +89,15 @@ const openBigPicture = (evt) => {
 };
 
 
-const showFullPicture = (picture) => {
-  picture.addEventListener('click', openBigPicture);
+/* Делегирование:
+добавление обработчика не на каждое изображение, а на родителя */
+const showFullPicture = () => {
+  picturesListElement.addEventListener('click', (evt) => {
+    const target = evt.target.parentNode;
+    if (target.tagName === 'A') {
+      openBigPicture(target);
+    }
+  });
 };
-
 
 export { showFullPicture };
