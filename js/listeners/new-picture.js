@@ -18,6 +18,7 @@ const commentTextElement = document.querySelector('.text__description');
 
 /* Редактирование изображения:
 ввод комментария  */
+//TODO: Причесать код. Проверить, есть ли реализация приятнее
 const addComment = (evt) => {
   const ASSEPT_KEY_CODES = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
   evt.preventDefault();
