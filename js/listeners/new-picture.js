@@ -30,71 +30,10 @@ const addHashTag = (evt) => {
 
 /* Редактирование изображения:
 ввод описания к фотографии  */
-//TODO: Причесать код. Подумать над реализацией приятнее
+//TODO: Валидация
 const addDescription = (evt) => {
-  const ASSEPT_KEY_CODES = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
-  evt.preventDefault();
-
-  let from = evt.currentTarget.selectionStart;
-  let to = evt.currentTarget.selectionEnd;
-  let text = '';
-
-  /*48-57 цифры
-  65-90 буквы
-  186-192, 219-222 символы
-  32 Пробел */
-  if (48 <= evt.keyCode && evt.keyCode <= 57 ||
-    65 <= evt.keyCode && evt.keyCode <= 90 ||
-    186 <= evt.keyCode && evt.keyCode <= 192 ||
-    219 <= evt.keyCode && evt.keyCode <= 222 ||
-    evt.keyCode === 32) {
-    text = evt.key;
-  }
-  else if (!ASSEPT_KEY_CODES.includes(evt.key)) {
-    return;
-  }
-  else {
-    switch (evt.key) {
-      case 'Backspace':
-        if (from === to && from > 0) {
-          from--;
-        }
-        break;
-
-      case 'Delete':
-        if (from === to) {
-          to++;
-        }
-        break;
-
-      case 'ArrowLeft':
-        if (from === to && from > 0) {
-          from--;
-          to--;
-        }
-        else {
-          to = from;
-        }
-        break;
-
-      case 'ArrowRight':
-        if (from === to) {
-          from++;
-          to++;
-        }
-        else {
-          from = to;
-        }
-        break;
-    }
-  }
-
-  const textBefore = evt.currentTarget.textContent.slice(0, from);
-  const textAfter = evt.currentTarget.textContent.slice(to);
-  evt.currentTarget.textContent = textBefore + text + textAfter;
-  evt.currentTarget.selectionStart = evt.currentTarget.selectionEnd = from + text.length;
+  evt.currentTarget.textContent = evt.currentTarget.value;
 };
-
 
 /* Редактирование изображения:
 сброс эффекта  */
@@ -139,7 +78,6 @@ const checkValueInScaleControl = (evt) => {
 /* Редактирование изображения:
 сбросить изменения  */
 const discardChanges = () => {
-  // console.log(getRandomInteger(1,20));
   newImgOverlayElement.classList.add('hidden');
 
   newImgElement.onload = () => {
@@ -156,6 +94,14 @@ const discardChanges = () => {
   scaleControlBiggerElement.removeEventListener('click', checkValueInScaleControl);
   scaleControlSmallerElement.removeEventListener('click', checkValueInScaleControl);
 
+  /* описание к фотографии */
+  descriptionElement.textContent = '';
+  descriptionElement.removeEventListener('keyup', addDescription);
+
+  /* хеш-теги */
+  hashTagElement.value = '';
+  hashTagElement.removeEventListener('keyup', addHashTag);
+
   /* эффект  */
   document.querySelector('[value="none"]').checked = true;
   effectsElement.forEach((effect) => {
@@ -167,12 +113,21 @@ const discardChanges = () => {
 
 /* Редактирование изображения:
 закрытие модалки */
-const closeModal = () => {
-  /* Сбросить изменения до дефолтных */
-  discardChanges();
+const closeModal = (evt) => {
+  //если фокусировка на комментарии или хештеге, а нажат Escape
+  const isActive = (document.activeElement === descriptionElement ||
+    document.activeElement === hashTagElement);
 
-  /* закрытие модалки */
-  closeNewImgButtonElement.removeEventListener('click', closeModal);
+  if (evt.key === 'Escape' && !isActive
+    || evt.currentTarget === closeNewImgButtonElement) {
+
+    /* Сбросить изменения до дефолтных */
+    discardChanges();
+
+    /* закрытие модалки */
+    closeNewImgButtonElement.removeEventListener('click', closeModal);
+    document.removeEventListener('keydown', closeModal);
+  }
 };
 
 
@@ -199,17 +154,14 @@ const loadNewPicture = (evt) => {
 
 
     /* добавить описание к фотографии */
-    descriptionElement.addEventListener('click', () => {
-      descriptionElement.addEventListener('keydown', addDescription);
-    });
+    descriptionElement.addEventListener('keyup', addDescription);
 
     /* добавить хеш-теги */
-    hashTagElement.addEventListener('click', () => {
-      hashTagElement.addEventListener('keyup', addHashTag);
-    });
+    hashTagElement.addEventListener('keyup', addHashTag);
 
     /* закрытие модалки */
     closeNewImgButtonElement.addEventListener('click', closeModal);
+    document.addEventListener('keydown', closeModal);
   }
   else {
     //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
