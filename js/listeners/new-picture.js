@@ -1,4 +1,3 @@
-// import { getRandomInteger } from './utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newFileElement = document.querySelector('input[type="file"]');
