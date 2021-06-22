@@ -1,3 +1,4 @@
+import { getRandomInteger } from '../utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newFileElement = document.querySelector('input[type="file"]');
@@ -11,6 +12,68 @@ const newImgElement = newImgPreviewElement.querySelector('img');
 const scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 const scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 const scaleControlValueElement = document.querySelector('.scale__control--value');
+
+const commentTextElement = document.querySelector('.text__description');
+
+
+/* Редактирование изображения:
+сброс эффекта  */
+const addComment = (evt) => {
+  // console.log(getRandomInteger(1, 100));
+  /* Отслеживаем выделеный текст */
+
+  // evt.preventDefault();
+  let from = evt.currentTarget.selectionStart;
+  let to = evt.currentTarget.selectionEnd;
+  let text;
+
+  /*48-57 цифры
+          65-90 буквы
+          186-192, 219-222 символы
+          32 Пробел */
+  if (48 <= evt.keyCode && evt.keyCode <= 57 ||
+    65 <= evt.keyCode && evt.keyCode <= 90 ||
+    186 <= evt.keyCode && evt.keyCode <= 192 ||
+    219 <= evt.keyCode && evt.keyCode <= 222 ||
+    evt.keyCode === 32) {
+    text = evt.key;
+  }
+  /*9 Tab */
+  else if (evt.keyCode === 9) {
+    text = '\t';
+  }
+  /*13 Enter */
+  else if (evt.keyCode === 13) {
+    text = '\n';
+  }
+  else {
+    text = '';
+  }
+
+
+  if (from === to) {
+    switch (evt.key) {
+      case 'Backspace':
+        from -= 1;
+        break;
+
+      case 'Delete':
+        to += 1;
+        break;
+    }
+  }
+
+
+  const textBefore = evt.currentTarget.textContent.slice(0, from);
+  const textAfter = evt.currentTarget.textContent.slice(to);
+  evt.currentTarget.textContent = textBefore + text + textAfter;
+
+  // evt.currentTarget.textContent = textBefore + text + textAfter;
+
+  // evt.currentTarget.selectionStart = evt.currentTarget.selectionEnd = from + text.length;
+  // evt.currentTarget.selectionStart = from + text;
+
+};
 
 
 /* Редактирование изображения:
@@ -99,7 +162,7 @@ const loadNewPicture = (evt) => {
   const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
   const file = evt.target.files[0];
 
-  if (ACCEPT.indexOf(file.type) !== -1) {
+  if (ACCEPT.includes(file.type)) {
     newImgElement.src = URL.createObjectURL(file);
     URL.revokeObjectURL(file);
     scaleControlBiggerElement.disabled = true;
@@ -112,6 +175,13 @@ const loadNewPicture = (evt) => {
     /* выбор эффекта */
     effectsElement.forEach((effect) => {
       effect.addEventListener('change', selectEffect);
+    });
+
+
+    /* добавить комментарий */
+    commentTextElement.addEventListener('click', () => {
+      commentTextElement.addEventListener('keydown', addComment);
+      // commentTextElement.addEventListener('keypress', addComment);
     });
 
     /* закрытие модалки */
