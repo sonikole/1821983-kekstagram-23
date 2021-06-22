@@ -79,6 +79,7 @@ const checkValueInScaleControl = (evt) => {
 сбросить изменения  */
 const discardChanges = () => {
   newImgOverlayElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
 
   newImgElement.onload = () => {
     URL.revokeObjectURL(newImgElement.src);
@@ -142,6 +143,7 @@ const loadNewPicture = (evt) => {
     URL.revokeObjectURL(file);
     scaleControlBiggerElement.disabled = true;
     newImgOverlayElement.classList.remove('hidden');
+    document.body.classList.add('modal-open');
 
     /* масштабирование  */
     scaleControlBiggerElement.addEventListener('click', checkValueInScaleControl);
