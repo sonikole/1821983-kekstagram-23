@@ -1,5 +1,4 @@
-// import noUiSlider from 'nouislider';
-
+// import { getRandomInteger } from './utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newFileElement = document.querySelector('input[type="file"]');
@@ -20,22 +19,76 @@ const sliderElement = document.querySelector('.effect-level');
 const effectsElement = document.querySelectorAll('input[name="effect"]');
 const effectValueElement = document.querySelector('.effect-level__value');
 
+let currentFilter = 'none';
 
+const FILTERS_VALUES =
+{
+  'none':
+  {
+    filter: null,
+  },
+  'chrome':
+  {
+    filterName: 'grayscale',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 1,
+    filterValueType: '',
+  },
+  'sepia':
+  {
+    filterName: 'sepia',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 1,
+    filterValueType: '',
+  },
+  'marvin':
+  {
+    filterName: 'invert',
+    filterStep: 1,
+    filterMinValue: 0,
+    filterMaxValue: 100,
+    filterValueType: '%',
+  },
+  'phobos':
+  {
+    filterName: 'blur',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 3,
+    filterValueType: 'px',
+  },
+  'heat':
+  {
+    filterName: 'brightness',
+    filterStep: 0.1,
+    filterMinValue: 1,
+    filterMaxValue: 3,
+    filterValueType: '',
+  },
+};
+
+/* Глубина фильтра изображения:
+запись значения слайдера  */
 const checkSliderValue = () => {
+  const filterType = FILTERS_VALUES[currentFilter];
   effectValueElement.value = sliderElement.noUiSlider.get();
+  newImgElement.style.filter = `${filterType.filterName}(${effectValueElement.value}${filterType.filterValueType})`;
 };
 
 
+/* Глубина фильтра изображения:
+создание слайдера  */
 const createSlider = () => {
 
   const settings = {
-    start: [100],
+    start: 0,
+    connect: 'lower',
     tooltips: true,
-    behaviour: 'snap',
-    connect: [true, false],
     range: {
-      'min': 0,
-      'max': 100,
+      min: 0,
+      max: 10,
     },
     pips: {
       mode: 'range',
@@ -44,8 +97,7 @@ const createSlider = () => {
   };
 
   noUiSlider.create(sliderElement, settings);
-  sliderElement.noUiSlider.on('update', checkSliderValue);
-  // sliderElement.addEventListener('update', checkSliderValue);
+  sliderElement.noUiSlider.on('slide', checkSliderValue);
 };
 
 /* Редактирование изображения:
@@ -73,7 +125,7 @@ const addDescription = (evt) => {
 сброс эффекта  */
 const removeEffectsPreview = () => {
   document.querySelectorAll('.effects__radio').forEach((item) => {
-    newImgPreviewElement.classList.remove(`effects__preview--${item.value}`);
+    newImgElement.classList.remove(`effects__preview--${item.value}`);
   });
 };
 
@@ -82,16 +134,25 @@ const removeEffectsPreview = () => {
 переключение эффекта  */
 const selectEffect = (evt) => {
 
-  // sliderElement.noUiSlider.removeEventListener('update', checkSliderValue);
-  if (evt.currentTarget.value !== 'none') {
+  currentFilter = evt.currentTarget.value;
+  if (currentFilter !== 'none') {
     sliderElement.classList.remove('hidden');
+
+    sliderElement.noUiSlider.updateOptions({
+      start: [FILTERS_VALUES[currentFilter].filterMaxValue],
+      step: FILTERS_VALUES[currentFilter].filterStep,
+      range: {
+        min: FILTERS_VALUES[currentFilter].filterMinValue,
+        max: FILTERS_VALUES[currentFilter].filterMaxValue,
+      },
+
+    });
   }
-  else{
+  else {
     sliderElement.classList.add('hidden');
   }
-
   removeEffectsPreview();
-  newImgPreviewElement.classList.add(`effects__preview--${evt.currentTarget.value}`);
+  newImgElement.classList.add(`effects__preview--${evt.currentTarget.value}`);
 };
 
 
@@ -188,7 +249,6 @@ const loadNewPicture = (evt) => {
     scaleControlBiggerElement.disabled = true;
     newImgOverlayElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
-
 
     /* масштабирование  */
     scaleControlBiggerElement.addEventListener('click', checkValueInScaleControl);
