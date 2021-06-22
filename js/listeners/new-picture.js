@@ -1,4 +1,3 @@
-import { getRandomInteger } from '../utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newFileElement = document.querySelector('input[type="file"]');
@@ -13,13 +12,26 @@ const scaleControlSmallerElement = document.querySelector('.scale__control--smal
 const scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 const scaleControlValueElement = document.querySelector('.scale__control--value');
 
-const commentTextElement = document.querySelector('.text__description');
+const descriptionElement = document.querySelector('.text__description');
+const hashTagElement = document.querySelector('.text__hashtags');
+
+/* Редактирование изображения:
+ввод хеш-тег  */
+const addHashTag = (evt) => {
+  //TODO: добавить валидацию
+  const regex = /[^a-zA-Zа-яА-Я0-9 ]/g;
+  let str = evt.currentTarget.value;
+  str = str.replace(regex, '');
+
+  const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
+  evt.currentTarget.value = tagged;
+};
 
 
 /* Редактирование изображения:
-ввод комментария  */
-//TODO: Причесать код. Проверить, есть ли реализация приятнее
-const addComment = (evt) => {
+ввод описания к фотографии  */
+//TODO: Причесать код. Подумать над реализацией приятнее
+const addDescription = (evt) => {
   const ASSEPT_KEY_CODES = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
   evt.preventDefault();
 
@@ -29,7 +41,7 @@ const addComment = (evt) => {
 
   /*48-57 цифры
   65-90 буквы
-          186-192, 219-222 символы
+  186-192, 219-222 символы
   32 Пробел */
   if (48 <= evt.keyCode && evt.keyCode <= 57 ||
     65 <= evt.keyCode && evt.keyCode <= 90 ||
@@ -186,9 +198,14 @@ const loadNewPicture = (evt) => {
     });
 
 
-    /* добавить комментарий */
-    commentTextElement.addEventListener('click', () => {
-      commentTextElement.addEventListener('keydown', addComment);
+    /* добавить описание к фотографии */
+    descriptionElement.addEventListener('click', () => {
+      descriptionElement.addEventListener('keydown', addDescription);
+    });
+
+    /* добавить хеш-теги */
+    hashTagElement.addEventListener('click', () => {
+      hashTagElement.addEventListener('keyup', addHashTag);
     });
 
     /* закрытие модалки */
