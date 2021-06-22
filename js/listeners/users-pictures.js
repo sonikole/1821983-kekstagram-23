@@ -1,4 +1,5 @@
 import { PHOTOS } from '../main.js';
+import {isEscEvent} from '../utils.js';
 
 //TODO: Будут использоваться в других методах
 const picturesListElement = document.querySelector('.pictures');
@@ -18,7 +19,7 @@ let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ дол�
 /* Просмотр фотографии:
 закрытие модалки */
 const closeModal = (evt) => {
-  if (evt.key === 'Escape' || evt.currentTarget === closeBigImgButtonElement) {
+  if ( isEscEvent(evt) || evt.currentTarget === closeBigImgButtonElement) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
       document.body.classList.remove('modal-open');

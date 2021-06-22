@@ -1,7 +1,8 @@
+import {isEscEvent} from '../utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
-const newFileElement = document.querySelector('input[type="file"]');
-const closeNewImgButtonElement = document.querySelector('#upload-cancel');
+const newImgLoadElement = document.querySelector('input[type="file"]');
+const newImgCloseElement = document.querySelector('#upload-cancel');
 
 const newImgPreviewElement = document.querySelector('.img-upload__preview');
 const newImgOverlayElement = document.querySelector('.img-upload__overlay');
@@ -223,14 +224,14 @@ const closeModal = (evt) => {
   const isActive = (document.activeElement === descriptionElement ||
     document.activeElement === hashTagElement);
 
-  if (evt.key === 'Escape' && !isActive
-    || evt.currentTarget === closeNewImgButtonElement) {
+  if (isEscEvent(evt) && !isActive
+    || evt.currentTarget === newImgCloseElement) {
 
     /* Сбросить изменения до дефолтных */
     discardChanges();
 
     /* закрытие модалки */
-    closeNewImgButtonElement.removeEventListener('click', closeModal);
+    newImgCloseElement.removeEventListener('click', closeModal);
     document.removeEventListener('keydown', closeModal);
   }
 };
@@ -268,7 +269,7 @@ const loadNewPicture = (evt) => {
     hashTagElement.addEventListener('keyup', addHashTag);
 
     /* закрытие модалки */
-    closeNewImgButtonElement.addEventListener('click', closeModal);
+    newImgCloseElement.addEventListener('click', closeModal);
     document.addEventListener('keydown', closeModal);
   }
   else {
@@ -280,7 +281,9 @@ const loadNewPicture = (evt) => {
 
 
 const uploadNewPicture = () => {
-  newFileElement.addEventListener('change', loadNewPicture);
+  newImgLoadElement.addEventListener('change', (evt) => {
+    loadNewPicture(evt);
+  });
 };
 
 
