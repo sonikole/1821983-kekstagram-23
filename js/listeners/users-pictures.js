@@ -14,6 +14,8 @@ const commentsListCountElement = document.querySelector('.social__comment-count'
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
+const likeElement = document.querySelector('.likes-count');
+
 let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
 
 
@@ -67,12 +69,18 @@ const onCloseModalButton = (evt) => {
   }
 };
 
+const onLikeButton = (evt) => {
+  const id = evt.target.parentNode.getAttribute('id');
+  PHOTOS[id].likes++;
+  likeElement.textContent = PHOTOS[id].likes;
+  likeElement.disabled = true;
+};
+
 
 /* Просмотр фотографии:
 открытие большой фотографии */
-const onAnotherUserPicture = (picture) => {
-
-  const values = PHOTOS[picture.getAttribute('id')];
+const onAnotherUserPicture = (evt) => {
+  const values = PHOTOS[evt.target.parentNode.getAttribute('id')];
 
   document.body.classList.add('modal-open');
 
@@ -85,6 +93,9 @@ const onAnotherUserPicture = (picture) => {
   loadBigImgComments(values.comments);
 
   //add Listeners
+  likeElement.addEventListener('click', () => {
+    onLikeButton(evt);
+  });
   bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
   document.addEventListener('keydown', onCloseModalButton);
 
@@ -97,7 +108,7 @@ const showFullPicture = () => {
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {
-      onAnotherUserPicture(target);
+      onAnotherUserPicture(evt);
     }
   });
 };
