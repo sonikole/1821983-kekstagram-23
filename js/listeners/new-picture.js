@@ -1,4 +1,4 @@
-import {isEscEvent} from '../utils.js';
+import { isEscEvent, isActiveElement, FILTERS_VALUES } from '../utils.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
 const newImgLoadElement = document.querySelector('input[type="file"]');
@@ -21,67 +21,42 @@ const effectValueElement = document.querySelector('.effect-level__value');
 
 let currentFilter = 'none';
 
-const FILTERS_VALUES =
-{
-  'none':
-  {
-    filter: null,
-  },
-  'chrome':
-  {
-    filterName: 'grayscale',
-    filterStep: 0.1,
-    filterMinValue: 0,
-    filterMaxValue: 1,
-    filterValueType: '',
-  },
-  'sepia':
-  {
-    filterName: 'sepia',
-    filterStep: 0.1,
-    filterMinValue: 0,
-    filterMaxValue: 1,
-    filterValueType: '',
-  },
-  'marvin':
-  {
-    filterName: 'invert',
-    filterStep: 1,
-    filterMinValue: 0,
-    filterMaxValue: 100,
-    filterValueType: '%',
-  },
-  'phobos':
-  {
-    filterName: 'blur',
-    filterStep: 0.1,
-    filterMinValue: 0,
-    filterMaxValue: 3,
-    filterValueType: 'px',
-  },
-  'heat':
-  {
-    filterName: 'brightness',
-    filterStep: 0.1,
-    filterMinValue: 1,
-    filterMaxValue: 3,
-    filterValueType: '',
-  },
-};
+
+/* Редактирование изображения:
+ввод хеш-тег  */
+function addHashTag(evt) {
+  //TODO: добавить валидацию
+  const regex = /[^a-zA-Zа-яА-Я0-9 ]/g;
+  let str = evt.currentTarget.value;
+  str = str.replace(regex, '');
+
+  const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
+  evt.currentTarget.value = tagged;
+}
+
+/* Редактирование изображения:
+ввод описания к фотографии */
+function addDescription(evt) {
+  //TODO: Валидация
+  evt.currentTarget.textContent = evt.currentTarget.value;
+}
 
 /* Глубина фильтра изображения:
-запись значения слайдера  */
-const checkSliderValue = () => {
-  const filterType = FILTERS_VALUES[currentFilter];
-  effectValueElement.value = sliderElement.noUiSlider.get();
-  newImgElement.style.filter = `${filterType.filterName}(${effectValueElement.value}${filterType.filterValueType})`;
-};
-
+обновить значения глубины эффекта  */
+function updateEffectDepthValue() {
+  if (currentFilter === 'none') {
+    newImgElement.style.filter = currentFilter;
+  }
+  else {
+    const filterType = FILTERS_VALUES[currentFilter];
+    effectValueElement.value = sliderElement.noUiSlider.get();
+    newImgElement.style.filter = `${filterType.filterName}(${effectValueElement.value}${filterType.filterValueType})`;
+  }
+}
 
 /* Глубина фильтра изображения:
 создание слайдера  */
-const createSlider = () => {
-
+function createEffectSlider() {
   const settings = {
     start: 0,
     connect: 'lower',
@@ -97,42 +72,48 @@ const createSlider = () => {
   };
 
   noUiSlider.create(sliderElement, settings);
-  sliderElement.noUiSlider.on('slide', checkSliderValue);
-};
-
-/* Редактирование изображения:
-ввод хеш-тег  */
-const addHashTag = (evt) => {
-  //TODO: добавить валидацию
-  const regex = /[^a-zA-Zа-яА-Я0-9 ]/g;
-  let str = evt.currentTarget.value;
-  str = str.replace(regex, '');
-
-  const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
-  evt.currentTarget.value = tagged;
-};
-
-
-/* Редактирование изображения:
-ввод описания к фотографии  */
-//TODO: Валидация
-const addDescription = (evt) => {
-  evt.currentTarget.textContent = evt.currentTarget.value;
-};
-
+  sliderElement.noUiSlider.on('slide', () => {
+    updateEffectDepthValue();
+  });
+  sliderElement.classList.add('hidden');
+}
 
 /* Редактирование изображения:
 сброс эффекта  */
-const removeEffectsPreview = () => {
+function removeEffectsPreview() {
   document.querySelectorAll('.effects__radio').forEach((item) => {
     newImgElement.classList.remove(`effects__preview--${item.value}`);
   });
-};
+  updateEffectDepthValue();
+}
 
+/* Редактирование изображения:
+сбросить значения полей до дефолтных */
+function setDefaultValues() {
+  //TODO: Разобраться по поводу пути дефолтного изображдения. Будет ли другой на сервере?
+  newImgElement.src = 'img/upload-default-image.jpg';
+
+  /* масштабирование  */
+  newImgElement.style = 'transform: scale(1)';
+  currentFilter = 'none';
+  scaleControlValueElement.value = '100%';
+  scaleControlBiggerElement.disabled = true;
+
+  /* описание к фотографии */
+  descriptionElement.textContent = '';
+
+  /* хеш-теги */
+  hashTagElement.value = '';
+
+  /* эффект  */
+  document.querySelector('[value="none"]').checked = true;
+  removeEffectsPreview();
+  sliderElement.noUiSlider.destroy();
+}
 
 /* Редактирование изображения:
 переключение эффекта  */
-const selectEffect = (evt) => {
+const onEffectButton = (evt) => {
 
   currentFilter = evt.currentTarget.value;
   if (currentFilter !== 'none') {
@@ -155,10 +136,9 @@ const selectEffect = (evt) => {
   newImgElement.classList.add(`effects__preview--${evt.currentTarget.value}`);
 };
 
-
 /* Редактирование изображения:
 масштабирование */
-const checkValueInScaleControl = (evt) => {
+const onScaleControlButton = (evt) => {
   let value = parseInt(scaleControlValueElement.value, 10);
 
   switch (evt.target.textContent) {
@@ -178,99 +158,62 @@ const checkValueInScaleControl = (evt) => {
   scaleControlSmallerElement.disabled = !(value > 25);
 };
 
-
-/* Редактирование изображения:
-сбросить изменения  */
-const discardChanges = () => {
-  newImgOverlayElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  newImgElement.onload = () => {
-    URL.revokeObjectURL(newImgElement.src);
-  };
-  //TODO: Разобраться по поводу пути дефолтного изображдения. Будет ли другой на сервере?
-  newImgElement.src = 'img/upload-default-image.jpg';
-
-  /* масштабирование  */
-  newImgElement.style = 'transform: scale(1)';
-  scaleControlValueElement.value = '100%';
-  scaleControlBiggerElement.disabled = true;
-
-  scaleControlBiggerElement.removeEventListener('click', checkValueInScaleControl);
-  scaleControlSmallerElement.removeEventListener('click', checkValueInScaleControl);
-
-  /* описание к фотографии */
-  descriptionElement.textContent = '';
-  descriptionElement.removeEventListener('keyup', addDescription);
-
-  /* хеш-теги */
-  hashTagElement.value = '';
-  hashTagElement.removeEventListener('keyup', addHashTag);
-
-  /* эффект  */
-  sliderElement.noUiSlider.destroy();
-  document.querySelector('[value="none"]').checked = true;
-  effectsElement.forEach((effect) => {
-    effect.removeEventListener('change', selectEffect);
-  });
-  removeEffectsPreview();
-};
-
-
 /* Редактирование изображения:
 закрытие модалки */
-const closeModal = (evt) => {
-  //если фокусировка на комментарии или хештеге, а нажат Escape
-  const isActive = (document.activeElement === descriptionElement ||
-    document.activeElement === hashTagElement);
+const onCloseModalButton = (evt) => {
+
+  //если фокусировка на комментарии или хештеге
+  const isActive = isActiveElement(descriptionElement) || isActiveElement(hashTagElement);
 
   if (isEscEvent(evt) && !isActive
     || evt.currentTarget === newImgCloseElement) {
 
-    /* Сбросить изменения до дефолтных */
-    discardChanges();
+    newImgOverlayElement.classList.add('hidden');
+    document.body.classList.remove('modal-open');
 
-    /* закрытие модалки */
-    newImgCloseElement.removeEventListener('click', closeModal);
-    document.removeEventListener('keydown', closeModal);
+    setDefaultValues();
+
+    scaleControlBiggerElement.removeEventListener('click', onScaleControlButton);/* масштабирование + */
+    scaleControlSmallerElement.removeEventListener('click', onScaleControlButton);/* масштабирование - */
+    descriptionElement.removeEventListener('keyup', addDescription);/* описание к фотографии */
+    hashTagElement.removeEventListener('keyup', addHashTag);/* хеш-теги */
+    effectsElement.forEach((effect) => {
+      effect.removeEventListener('change', onEffectButton);/* эффект  */
+    });
+
+
+    newImgCloseElement.removeEventListener('click', onCloseModalButton); /* закрытие модалки */
+    document.removeEventListener('keydown', onCloseModalButton); /* закрытие модалки */
   }
 };
 
-
 /* Редактирование изображения:
 загрузить новую фотографию для редактирования */
-const loadNewPicture = (evt) => {
+const onLoadNewPicture = (evt) => {
   const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
   const file = evt.target.files[0];
 
   if (ACCEPT.includes(file.type)) {
     newImgElement.src = URL.createObjectURL(file);
     URL.revokeObjectURL(file);
+
     scaleControlBiggerElement.disabled = true;
     newImgOverlayElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    /* масштабирование  */
-    scaleControlBiggerElement.addEventListener('click', checkValueInScaleControl);
-    scaleControlSmallerElement.addEventListener('click', checkValueInScaleControl);
+    createEffectSlider();
 
-    createSlider();
-    /* выбор эффекта */
-    sliderElement.classList.add('hidden');
     effectsElement.forEach((effect) => {
-      effect.addEventListener('change', selectEffect);
+      effect.addEventListener('change', onEffectButton); /* выбор эффекта */
     });
+    scaleControlBiggerElement.addEventListener('click', onScaleControlButton);/* масштабирование + */
+    scaleControlSmallerElement.addEventListener('click', onScaleControlButton);/* масштабирование - */
+    descriptionElement.addEventListener('keyup', addDescription);/* добавить описание к фотографии */
+    hashTagElement.addEventListener('keyup', addHashTag); /* добавить хеш-теги */
+    newImgCloseElement.addEventListener('click', onCloseModalButton);/* закрытие модалки */
+    document.addEventListener('keydown', onCloseModalButton);
 
-
-    /* добавить описание к фотографии */
-    descriptionElement.addEventListener('keyup', addDescription);
-
-    /* добавить хеш-теги */
-    hashTagElement.addEventListener('keyup', addHashTag);
-
-    /* закрытие модалки */
-    newImgCloseElement.addEventListener('click', closeModal);
-    document.addEventListener('keydown', closeModal);
+    evt.target.value = null; //чтобы загружать одну и ту же фотографию
   }
   else {
     //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
@@ -279,12 +222,10 @@ const loadNewPicture = (evt) => {
 
 };
 
-
 const uploadNewPicture = () => {
   newImgLoadElement.addEventListener('change', (evt) => {
-    loadNewPicture(evt);
+    onLoadNewPicture(evt);
   });
 };
-
 
 export { uploadNewPicture };
