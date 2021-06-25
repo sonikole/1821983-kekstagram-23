@@ -3,8 +3,9 @@ const descriptionElement = document.querySelector('.text__description');
 const hashTagElement = document.querySelector('.text__hashtags');
 
 const MAX_HASHTAG_COUNT = 5;
-const MAX_HASHTAG_LENGTH = 19;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_COMMENT_LENGTH = 20;
+
 
 function isValidNewPicture(curFile) {
   const ACCEPT = ['image/jpeg', 'image/pjpeg', 'image/png'];
@@ -23,25 +24,25 @@ function isValidNewPicture(curFile) {
 
 function isValidHashTag(value) {
   const re = /(([ ](?!\b)|^)(#[A-zА-я0-9]{0,19})(?=[ ]|$)){0,5}/g;
-  const hashTags = value.split([' ']).filter(String);
+  const hashTags = value.toLowerCase().split([' ']).filter(String);
   const uniqueHashTags = Array.from(new Set(hashTags));
   let isValid = true;
   let message = '';
 
-  //поиск дубликатов
   if (hashTags.length > MAX_HASHTAG_COUNT) {
     isValid = false;
     message = `(!): количество указанных хеш-тегов (${hashTags.length}) превышает допустимое (${MAX_HASHTAG_COUNT})`;
   }
 
+  //поиск дубликатов
   hashTags.forEach((element) => {
     if (element.length > MAX_HASHTAG_LENGTH) {
-      message += `\n(!): длина хеш-тега (${element}) превышает допустимое (${MAX_HASHTAG_LENGTH})`;
+      isValid = false;
+      message += `\n(!): длина хеш-тега '${element + 1}' превышает допустимое (${MAX_HASHTAG_LENGTH})`;
     }
   });
 
   if (!hashTags.every((v, i) => v === uniqueHashTags[i])) {
-    isValid = false;
     const output = [];
 
     for (let i = 0; i < hashTags.length - 1; i++) {
@@ -51,8 +52,10 @@ function isValidHashTag(value) {
         }
       }
     }
-    message += `\n(!): запрещены повторяющиеся хеш-теги: ${output.join(', ')}`;
+    isValid = false;
+    message += `\n(!): запрещены повторяющиеся хеш-теги: "${output.join(', "')}"`;
   }
+
   if (re.test(value) && isValid) {
     message = '';
   }

@@ -1,5 +1,5 @@
 import { PHOTOS } from '../main.js';
-import { isEscEvent } from '../utils.js';
+import { isEscEvent } from '../utils/utils.js';
 
 //TODO: Будут использоваться в других методах
 const picturesListElement = document.querySelector('.pictures');
