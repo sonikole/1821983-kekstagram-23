@@ -34,7 +34,7 @@ function validateBeforeSubmit() {
     setTimeout(() => {
       hashTagElement.classList.remove('error_hashtags');
     }, 500);
-  }, { once: true });
+  });
 
   if (isValide) {
     //TODO: разобраться с отправкой формы
