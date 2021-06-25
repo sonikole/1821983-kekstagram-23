@@ -28,11 +28,10 @@ let currentFilter = 'none';
 function addHashTag(evt) {
   const regex = /[^a-zA-Zа-яА-Я0-9 ]/g;
   let str = evt.currentTarget.value;
-  str = str.replace(regex, '').replace('  ', ' ');
+  str = str.replace(regex, '');
 
   const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
   evt.currentTarget.value = tagged;
-  console.log(tagged);
   isValidHashTag(tagged);
 }
 
