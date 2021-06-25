@@ -1,5 +1,3 @@
-import { showFullPicture } from './listeners/users-pictures.js';
-
 /* Функция для добавления фотографий других пользователей на главный экран */
 const generateUsersPictures = (photos) => {
 

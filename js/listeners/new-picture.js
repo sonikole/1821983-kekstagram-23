@@ -1,7 +1,8 @@
 import { isEscEvent, isActiveElement, FILTERS_VALUES } from '../utils.js';
+import { isValidNewPicture, isValidHashTag } from '../forms.js';
 //FIXME: Поменять наименования в соответствии с критериями.
 //TODO: Раскидать по модулям
-const newImgLoadElement = document.querySelector('input[type="file"]');
+const newImgInputElement = document.querySelector('.img-upload__input');
 const newImgCloseElement = document.querySelector('#upload-cancel');
 
 const newImgPreviewElement = document.querySelector('.img-upload__preview');
@@ -25,13 +26,14 @@ let currentFilter = 'none';
 /* Редактирование изображения:
 ввод хеш-тег  */
 function addHashTag(evt) {
-  //TODO: добавить валидацию
   const regex = /[^a-zA-Zа-яА-Я0-9 ]/g;
   let str = evt.currentTarget.value;
-  str = str.replace(regex, '');
+  str = str.replace(regex, '').replace('  ', ' ');
 
   const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
   evt.currentTarget.value = tagged;
+  console.log(tagged);
+  isValidHashTag(tagged);
 }
 
 /* Редактирование изображения:
@@ -187,15 +189,16 @@ const onCloseModalButton = (evt) => {
   }
 };
 
+
 /* Редактирование изображения:
 загрузить новую фотографию для редактирования */
-const onLoadNewPicture = (evt) => {
-  const ACCEPT = ['image/png', 'image/jpg', 'image/jpeg'];
-  const file = evt.target.files[0];
+const onLoadNewPicture = () => {
+  const curFile = newImgInputElement.files[0];
+  const isValid = isValidNewPicture(curFile);
 
-  if (ACCEPT.includes(file.type)) {
-    newImgElement.src = URL.createObjectURL(file);
-    URL.revokeObjectURL(file);
+  if (isValid) {
+    newImgElement.src = URL.createObjectURL(curFile);
+    URL.revokeObjectURL(curFile);
 
     scaleControlBiggerElement.disabled = true;
     newImgOverlayElement.classList.remove('hidden');
@@ -212,19 +215,12 @@ const onLoadNewPicture = (evt) => {
     hashTagElement.addEventListener('keyup', addHashTag); /* добавить хеш-теги */
     newImgCloseElement.addEventListener('click', onCloseModalButton);/* закрытие модалки */
     document.addEventListener('keydown', onCloseModalButton);
-
-    evt.target.value = null; //чтобы загружать одну и ту же фотографию
   }
-  else {
-    //TODO: Обработать ошибку, если пользователь выберет неподходящий формат.
-    /* ожидание загрузки  */
-  }
-
 };
 
 const uploadNewPicture = () => {
-  newImgLoadElement.addEventListener('change', (evt) => {
-    onLoadNewPicture(evt);
+  newImgInputElement.addEventListener('change', () => {
+    onLoadNewPicture();
   });
 };
 
