@@ -48,7 +48,7 @@ function addCommentOnPage(comment) {
 }
 
 
-function showMoreComments() {
+const onShowMoreComments = () => {
   const count = Object.keys(curentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
   let maxCount = maxCommentsCount;
@@ -65,7 +65,7 @@ function showMoreComments() {
 
   maxCommentsCount += 5;
   commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
-}
+};
 
 
 /* Просмотр фотографии:
@@ -79,7 +79,7 @@ const onCloseModalButton = (evt) => {
 
       removeCommentsOnPage();
 
-      commentsLoaderElement.removeEventListener('click', showMoreComments);
+      commentsLoaderElement.removeEventListener('click', onShowMoreComments);
       bigImgCloseButtonElement.removeEventListener('click', onCloseModalButton);
       document.removeEventListener('keydown', onCloseModalButton);
     }
@@ -108,14 +108,14 @@ const onAnotherUserPicture = (evt) => {
   bigImgLikesElement.textContent = curentOpenPhoto.likes;
   bigImgDescriptionElement.textContent = curentOpenPhoto.description;
 
-  showMoreComments();
+  onShowMoreComments();
 
   //add Listeners
   // likeElement.addEventListener('click', () => {
   //   onLikeButton(evt);
   // });
   bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
-  commentsLoaderElement.addEventListener('click', showMoreComments);
+  commentsLoaderElement.addEventListener('click', onShowMoreComments);
   document.addEventListener('keydown', onCloseModalButton);
 
 };
