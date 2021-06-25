@@ -23,26 +23,6 @@ const effectValueElement = document.querySelector('.effect-level__value');
 
 let currentFilter = 'none';
 
-/* Отправить:
-Валидация текстовых полей перед отправкой формы */
-function validateBeforeSubmit() {
-  let isValide = true;
-
-  hashTagElement.addEventListener('invalid', () => {
-    isValide = false;
-    hashTagElement.classList.add('error_hashtags');
-    setTimeout(() => {
-      hashTagElement.classList.remove('error_hashtags');
-    }, 500);
-  });
-
-  if (isValide) {
-    //TODO: разобраться с отправкой формы
-    newImgSubmitElement.removeEventListener('click', validateBeforeSubmit);
-
-  }
-}
-
 /* Редактирование изображения:
 ввод хеш-тег  */
 function addHashTag(evt) {
@@ -108,6 +88,9 @@ function removeEffectsPreview() {
   updateEffectDepthValue();
 }
 
+
+
+
 /* Редактирование изображения:
 сбросить значения полей до дефолтных */
 function setDefaultValues() {
@@ -133,6 +116,28 @@ function setDefaultValues() {
 
   /* сбросить изображение  */
   newImgInputElement.value = null;
+}
+
+
+/* Отправить:
+Валидация текстовых полей перед отправкой формы */
+function onSubmitPicture() {
+  let isValide = true;
+
+  hashTagElement.addEventListener('invalid', () => {
+    isValide = false;
+    hashTagElement.classList.add('error_hashtags');
+    setTimeout(() => {
+      hashTagElement.classList.remove('error_hashtags');
+    }, 500);
+  });
+
+  if (isValide) {
+    //TODO: разобраться с отправкой формы
+    setDefaultValues();
+    newImgSubmitElement.removeEventListener('click', onSubmitPicture);
+
+  }
 }
 
 /* Редактирование изображения:
@@ -197,7 +202,7 @@ const onCloseModalButton = (evt) => {
 
     setDefaultValues();
 
-    newImgSubmitElement.removeEventListener('click', validateBeforeSubmit);
+    newImgSubmitElement.removeEventListener('click', onSubmitPicture);
     scaleControlBiggerElement.removeEventListener('click', onScaleControlButton);/* масштабирование + */
     scaleControlSmallerElement.removeEventListener('click', onScaleControlButton);/* масштабирование - */
     descriptionElement.removeEventListener('keyup', addDescription);/* описание к фотографии */
@@ -236,7 +241,7 @@ const onLoadNewPicture = () => {
     hashTagElement.addEventListener('keyup', addHashTag); /* добавить хеш-теги */
     newImgCloseElement.addEventListener('click', onCloseModalButton);/* закрытие модалки */
     document.addEventListener('keydown', onCloseModalButton);/* закрытие модалки */
-    newImgSubmitElement.addEventListener('click', validateBeforeSubmit);/* отправить изображение */
+    newImgSubmitElement.addEventListener('click', onSubmitPicture);/* отправить изображение */
   }
 };
 
