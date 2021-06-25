@@ -1,4 +1,52 @@
 /* eslint-disable no-console */
+const FILTERS_VALUES =
+{
+  'none':
+  {
+    filter: null,
+  },
+  'chrome':
+  {
+    filterName: 'grayscale',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 1,
+    filterValueType: '',
+  },
+  'sepia':
+  {
+    filterName: 'sepia',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 1,
+    filterValueType: '',
+  },
+  'marvin':
+  {
+    filterName: 'invert',
+    filterStep: 1,
+    filterMinValue: 0,
+    filterMaxValue: 100,
+    filterValueType: '%',
+  },
+  'phobos':
+  {
+    filterName: 'blur',
+    filterStep: 0.1,
+    filterMinValue: 0,
+    filterMaxValue: 3,
+    filterValueType: 'px',
+  },
+  'heat':
+  {
+    filterName: 'brightness',
+    filterStep: 0.1,
+    filterMinValue: 1,
+    filterMaxValue: 3,
+    filterValueType: '',
+  },
+};
+
 
 /* Функция, возвращающая случайное целое число из переданного диапазона включительно. */
 const getRandomInteger = (min, max) => {
@@ -22,4 +70,9 @@ const getRandomInteger = (min, max) => {
 /* Функция для проверки максимальной длины строки. */
 const checkMaxLength = (line, maxLength) => line.length <= maxLength;
 
-export { getRandomInteger, checkMaxLength };
+
+const isEscEvent = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
+
+const isActiveElement = (element) => (document.activeElement === element);
+
+export { getRandomInteger, checkMaxLength, isEscEvent, isActiveElement, FILTERS_VALUES };
