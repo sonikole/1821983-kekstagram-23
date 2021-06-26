@@ -1,7 +1,6 @@
 import { PHOTOS } from '../main.js';
 import { isEscEvent } from '../utils/utils.js';
 
-//TODO: Будут использоваться в других методах
 const picturesListElement = document.querySelector('.pictures');
 
 const bigPictureElement = document.querySelector('.big-picture');
@@ -16,10 +15,11 @@ const commentsListElement = document.querySelector('.social__comments');
 
 // const likeElement = document.querySelector('.likes-count');
 
-let maxCommentsCount = 5;
-let curentOpenPhoto;
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
+
+let maxCommentsCount = 5;
+let curentOpenPhoto;
 
 function removeCommentsOnPage() {
   while (commentsListElement.firstChild) {
