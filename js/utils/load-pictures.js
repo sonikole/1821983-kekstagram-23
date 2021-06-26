@@ -1,6 +1,6 @@
 import { showFullPicture } from '../listeners/users-pictures.js';
 
-const REQUEST_URL = 'https://23.javascript.pages.academy/kekstagram/data';
+const URL_DATA = 'https://23.javascript.pages.academy/kekstagram/data';
 const ACTIVE_CLASS = 'img-filters__button--active';
 const STATUS_OK = 200;
 const TYPE_JSON = 'json';
@@ -104,9 +104,11 @@ const filterUsersPictures = () => {
 запрос к серверу сервера  */
 const loadUsersPictures = () => {
   const request = new XMLHttpRequest();
-  request.open('GET', REQUEST_URL); request.responseType = TYPE_JSON;
-  request.send();
-  request.onload = function () {
+
+  request.open('GET', URL_DATA);
+  request.responseType = TYPE_JSON;
+
+  request.addEventListener('load', () => {
     if (request.status === STATUS_OK) {
       photos = request.response;
 
@@ -119,7 +121,9 @@ const loadUsersPictures = () => {
       const buttonMessage = 'Понятненько';
       addErrorMessage(errorMessage, buttonMessage);
     }
-  };
+  });
+
+  request.send();
 };
 
 export { loadUsersPictures, photos };
