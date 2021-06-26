@@ -1,7 +1,6 @@
 import { photos } from '../utils/load-pictures.js';
 import { isEscEvent } from '../utils/utils.js';
 
-const picturesListElement = document.querySelector('.pictures');
 
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
@@ -87,7 +86,8 @@ const onCloseModalButton = (evt) => {
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
-  curentOpenPhoto = photos[evt.target.parentNode.getAttribute('id')];
+  const id = parseInt(evt.target.parentNode.getAttribute('id'), 10);
+  curentOpenPhoto = photos.find((photo) => photo.id === id);
 
   document.body.classList.add('modal-open');
 
@@ -112,6 +112,7 @@ const onAnotherUserPicture = (evt) => {
 /* Делегирование:
 добавление обработчика не на каждое изображение, а на родителя */
 const showFullPicture = () => {
+  const picturesListElement = document.querySelector('.pictures');
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {
