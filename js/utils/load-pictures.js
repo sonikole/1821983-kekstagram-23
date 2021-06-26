@@ -31,24 +31,26 @@ const addErrorMessage = (errorMessage, buttonMessage) => {
 /* Загрузка фотографий других пользователей:
 добавление фотографий других пользователей на главнй экран  */
 const addImgInDocument = () => {
-  const containerElement = document.querySelector('.pictures');
-  const templateElement = document.querySelector('#picture');
-  const elementElement = templateElement.content.querySelector('.picture');
+  setTimeout(() => {
+    const containerElement = document.querySelector('.pictures');
+    const templateElement = document.querySelector('#picture');
+    const elementElement = templateElement.content.querySelector('.picture');
 
-  while (containerElement.querySelector('A')) {
-    containerElement.removeChild(containerElement.querySelector('A'));
-  }
+    while (containerElement.querySelector('A')) {
+      containerElement.removeChild(containerElement.querySelector('A'));
+    }
 
-  for (let index = 0; index < photos.length; index++) {
-    const clonedElement = elementElement.cloneNode(true);
-    clonedElement.id = photos[index].id;
-    clonedElement.querySelector('.picture__img').src = photos[index].url;
-    clonedElement.querySelector('.picture__img').alt = photos[index].description;
-    clonedElement.querySelector('.picture__comments').textContent = photos[index].comments.length;
-    clonedElement.querySelector('.picture__likes').textContent = photos[index].likes;
+    for (let index = 0; index < photos.length; index++) {
+      const clonedElement = elementElement.cloneNode(true);
+      clonedElement.id = photos[index].id;
+      clonedElement.querySelector('.picture__img').src = photos[index].url;
+      clonedElement.querySelector('.picture__img').alt = photos[index].description;
+      clonedElement.querySelector('.picture__comments').textContent = photos[index].comments.length;
+      clonedElement.querySelector('.picture__likes').textContent = photos[index].likes;
 
-    containerElement.appendChild(clonedElement);
-  }
+      containerElement.appendChild(clonedElement);
+    }
+  }, 500);
 };
 
 /* Фильтрация:
