@@ -83,7 +83,6 @@ const onCloseModalButton = (evt) => {
   }
 };
 
-
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {

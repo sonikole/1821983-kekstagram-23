@@ -4,6 +4,8 @@ const hashTagElement = document.querySelector('.text__hashtags');
 const MAX_HASHTAG_COUNT = 5;
 const MAX_HASHTAG_LENGTH = 20;
 
+/* Валидация:
+тип фотографии  */
 function isValidNewPicture(curFile) {
   const ACCEPT = ['image/jpeg', 'image/jpeg', 'image/png'];
   let isValid = true;
@@ -19,6 +21,8 @@ function isValidNewPicture(curFile) {
   return isValid;
 }
 
+/* Валидация:
+хеш-тег  */
 function isValidHashTag(value) {
   const re = /(([ ](?!\b)|^)(#[A-zА-я0-9]{0,19})(?=[ ]|$)){0,5}/g;
   const hashTags = value.toLowerCase().split([' ']).filter(String);
