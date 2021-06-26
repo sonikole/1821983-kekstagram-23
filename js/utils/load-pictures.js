@@ -1,15 +1,15 @@
-
 import { showFullPicture } from '../listeners/users-pictures.js';
+
+const REQUEST_URL = 'https://23.javascript.pages.academy/kekstagram/data';
+const ACTIVE_CLASS = 'img-filters__button--active';
+const STATUS_OK = 200;
+const TYPE_JSON = 'json';
 
 const imgFilters = document.querySelector('.img-filters');
 const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
-
-const REQUEST_URL = 'https://23.javascript.pages.academy/kekstagram/data';
-const ACTIVE_CLASS = 'img-filters__button--active';
 let photos;
-
 
 /* Оповещение:
 неуспешная загрузка фотографий с сервера  */
@@ -68,7 +68,6 @@ const onDefaultFilter = () => {
   defaultFilter.disabled = true;
   photos.sort((a, b) => (a.id - b.id));
   addImgInDocument();
-
 };
 
 /* Фильтрация:
@@ -105,10 +104,10 @@ const filterUsersPictures = () => {
 запрос к серверу сервера  */
 const loadUsersPictures = () => {
   const request = new XMLHttpRequest();
-  request.open('GET', REQUEST_URL); request.responseType = 'json';
+  request.open('GET', REQUEST_URL); request.responseType = TYPE_JSON;
   request.send();
   request.onload = function () {
-    if (request.status === 200) {
+    if (request.status === STATUS_OK) {
       photos = request.response;
 
       addImgInDocument();
@@ -122,6 +121,5 @@ const loadUsersPictures = () => {
     }
   };
 };
-
 
 export { loadUsersPictures, photos };

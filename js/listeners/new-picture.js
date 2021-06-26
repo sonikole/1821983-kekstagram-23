@@ -1,6 +1,10 @@
 import { isEscEvent, isActiveElement, FILTERS_VALUES } from '../utils/utils.js';
 import { isValidNewPicture, isValidHashTag } from '../utils/forms-validate.js';
 
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+
 //TODO: Раскидать по модулям, если необходимо
 const newImgInputElement = document.querySelector('.img-upload__input');
 const newImgCloseElement = document.querySelector('.img-upload__cancel');
@@ -20,10 +24,6 @@ const hashTagElement = document.querySelector('.text__hashtags');
 const sliderElement = document.querySelector('.effect-level');
 const effectsElement = document.querySelectorAll('input[name="effect"]');
 const effectValueElement = document.querySelector('.effect-level__value');
-
-const SCALE_STEP = 25;
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
 
 let currentFilter = 'none';
 
@@ -224,7 +224,6 @@ const onSubmitButton = (evt) => {
 /* Редактирование изображения:
 закрытие модалки */
 const onCloseModalButton = (evt) => {
-
   //если фокусировка на комментарии или хештеге
   const isActive = isActiveElement(descriptionElement) || isActiveElement(hashTagElement);
 
@@ -289,6 +288,5 @@ const uploadNewPicture = () => {
     onLoadNewPicture();
   });
 };
-
 
 export { uploadNewPicture };
