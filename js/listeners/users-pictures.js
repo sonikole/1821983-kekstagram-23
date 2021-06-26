@@ -1,7 +1,6 @@
 import { photos } from '../utils/load-pictures.js';
 import { isEscEvent } from '../utils/utils.js';
 
-
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
