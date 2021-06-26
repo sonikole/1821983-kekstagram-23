@@ -72,4 +72,4 @@ const isEscEvent = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
 
 const isActiveElement = (element) => (document.activeElement === element);
 
-export { getRandomInteger, checkMaxLength, isEscEvent, isActiveElement, FILTERS_VALUES };
+export { getRandomInteger, isEscEvent, isActiveElement, FILTERS_VALUES };
