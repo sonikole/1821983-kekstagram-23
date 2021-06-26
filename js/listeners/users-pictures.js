@@ -1,4 +1,4 @@
-import { PHOTOS } from '../main.js';
+import { photos } from '../utils/load-pictures.js';
 import { isEscEvent } from '../utils/utils.js';
 
 const picturesListElement = document.querySelector('.pictures');
@@ -83,10 +83,11 @@ const onCloseModalButton = (evt) => {
   }
 };
 
+
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
-  curentOpenPhoto = PHOTOS[evt.target.parentNode.getAttribute('id')];
+  curentOpenPhoto = photos[evt.target.parentNode.getAttribute('id')];
 
   document.body.classList.add('modal-open');
 
