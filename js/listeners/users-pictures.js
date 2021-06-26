@@ -1,6 +1,9 @@
 import { photos } from '../utils/load-pictures.js';
 import { isEscEvent } from '../utils/utils.js';
 
+const IMG_WIDTH = 35;
+const IMG_HEIGHT = 35;
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
@@ -10,9 +13,6 @@ const bigImgCloseButtonElement = document.querySelector('#picture-cancel');
 const commentsListCountElement = document.querySelector('.social__comment-count');
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
-
-const IMG_WIDTH = 35;
-const IMG_HEIGHT = 35;
 
 let maxCommentsCount = 5;
 let curentOpenPhoto;

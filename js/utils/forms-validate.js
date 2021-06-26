@@ -1,12 +1,12 @@
-const newImgInputElement = document.querySelector('.img-upload__input');
-const hashTagElement = document.querySelector('.text__hashtags');
-
 const MAX_HASHTAG_COUNT = 5;
 const MAX_HASHTAG_LENGTH = 20;
 
+const newImgInputElement = document.querySelector('.img-upload__input');
+const hashTagElement = document.querySelector('.text__hashtags');
+
 /* Валидация:
 тип фотографии  */
-function isValidNewPicture(curFile) {
+const isValidNewPicture = (curFile) => {
   const ACCEPT = ['image/jpeg', 'image/jpeg', 'image/png'];
   let isValid = true;
 
@@ -19,11 +19,11 @@ function isValidNewPicture(curFile) {
   }
   newImgInputElement.reportValidity();
   return isValid;
-}
+};
 
 /* Валидация:
 хеш-тег  */
-function isValidHashTag(value) {
+const isValidHashTag = (value) => {
   const re = /(([ ](?!\b)|^)(#[A-zА-я0-9]{0,19})(?=[ ]|$)){0,5}/g;
   const hashTags = value.toLowerCase().split([' ']).filter(String);
   const uniqueHashTags = Array.from(new Set(hashTags));
@@ -64,6 +64,6 @@ function isValidHashTag(value) {
   hashTagElement.setCustomValidity(message);
   hashTagElement.reportValidity();
   return isValid;
-}
+};
 
 export { isValidNewPicture, isValidHashTag };
