@@ -1,17 +1,14 @@
 
 import { showFullPicture } from '../listeners/users-pictures.js';
 
-const REQUEST_URL = 'https://23.javascript.pages.academy/kekstagram/data';
-let photos;
-
-
 const imgFilters = document.querySelector('.img-filters');
 const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
-// const allPhotos = document.querySelectorAll('.picture');
 
+const REQUEST_URL = 'https://23.javascript.pages.academy/kekstagram/data';
 const ACTIVE_CLASS = 'img-filters__button--active';
+let photos;
 
 
 /* Оповещение:
@@ -34,7 +31,6 @@ const addErrorMessage = (errorMessage, buttonMessage) => {
 /* Загрузка фотографий других пользователей:
 добавление фотографий других пользователей на главнй экран  */
 const addImgInDocument = () => {
-
   const containerElement = document.querySelector('.pictures');
   const templateElement = document.querySelector('#picture');
   const elementElement = templateElement.content.querySelector('.picture');
@@ -53,15 +49,17 @@ const addImgInDocument = () => {
 
     containerElement.appendChild(clonedElement);
   }
-
 };
 
-
+/* Фильтрация:
+очистка активной фильтрации при переключении */
 const removeActiveFilter = () => {
   imgFilters.querySelector(`.${ACTIVE_CLASS}`).disabled = false;
   imgFilters.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
 };
 
+/* Фильтрация:
+дефолтная фильтрация */
 const onDefaultFilter = () => {
   removeActiveFilter();
   defaultFilter.classList.add(ACTIVE_CLASS);
@@ -71,6 +69,8 @@ const onDefaultFilter = () => {
 
 };
 
+/* Фильтрация:
+рандомная фильтрация */
 const onRandomFilter = () => {
   removeActiveFilter();
   randomFilter.classList.add(ACTIVE_CLASS);
@@ -79,6 +79,8 @@ const onRandomFilter = () => {
   addImgInDocument();
 };
 
+/* Фильтрация:
+обсуждаемая фильтрация */
 const onDiscussedFilter = () => {
   removeActiveFilter();
   discussedFilter.classList.add(ACTIVE_CLASS);
@@ -87,6 +89,8 @@ const onDiscussedFilter = () => {
   addImgInDocument();
 };
 
+/* Фильтрация:
+включаем фильтрацию */
 const filterUsersPictures = () => {
   imgFilters.classList.remove('img-filters--inactive');
 
@@ -94,7 +98,6 @@ const filterUsersPictures = () => {
   randomFilter.addEventListener('click', onRandomFilter);
   discussedFilter.addEventListener('click', onDiscussedFilter);
 };
-
 
 /* Загрузка фотографий других пользователей:
 запрос к серверу сервера  */
