@@ -23,7 +23,8 @@ const effectValueElement = document.querySelector('.effect-level__value');
 
 let currentFilter = 'none';
 
-
+/* Оповещение:
+успешная загрузка фотографии  */
 function addSuccessMessage() {
   const templateSuccessElement = document.querySelector('#success');
   const elementElement = templateSuccessElement.content.querySelector('.success');
@@ -38,6 +39,8 @@ function addSuccessMessage() {
 
 }
 
+/* Оповещение:
+неуспешная загрузка фотографии  */
 function addErrorMessage() {
   const templateErrorElement = document.querySelector('#error');
   const elementElement = templateErrorElement.content.querySelector('.error');
@@ -51,7 +54,6 @@ function addErrorMessage() {
   }, { once: true });
 
 }
-
 
 /* Редактирование изображения:
 ввод хеш-тег  */
@@ -118,7 +120,6 @@ function removeEffectsPreview() {
   updateEffectDepthValue();
 }
 
-
 /* Редактирование изображения:
 сбросить значения полей до дефолтных */
 function setDefaultValues() {
@@ -146,7 +147,6 @@ function setDefaultValues() {
   /* сбросить изображение  */
   newImgInputElement.value = null;
 }
-
 
 /* Редактирование изображения:
 переключение эффекта  */
@@ -195,8 +195,9 @@ const onScaleControlButton = (evt) => {
   scaleControlSmallerElement.disabled = !(value > 25);
 };
 
-
-function submitPicture(evt) {
+/* Редактирование изображения:
+проверить валидность перед отправкой изображения на сервер */
+function checkBeforeSubmit(evt) {
 
   if (!hashTagElement.validity.valid) {
     hashTagElement.classList.add('error_hashtags');
@@ -211,12 +212,12 @@ function submitPicture(evt) {
   }
 }
 
-
-/* Отправить:
+/* Редактирование изображения:
 Валидация текстовых полей перед отправкой формы */
 const onSubmitButton = (evt) => {
-  submitPicture(evt);
+  checkBeforeSubmit(evt);
 };
+
 /* Редактирование изображения:
 закрытие модалки */
 const onCloseModalButton = (evt) => {
@@ -230,6 +231,8 @@ const onCloseModalButton = (evt) => {
   }
 };
 
+/* Редактирование изображения:
+закрытие модалки и сброс настроек */
 function closeModal() {
 
   newImgOverlayElement.classList.add('hidden');
@@ -248,7 +251,6 @@ function closeModal() {
   newImgCloseElement.removeEventListener('click', onCloseModalButton); /* закрытие модалки */
   document.removeEventListener('keydown', onCloseModalButton); /* закрытие модалки */
 }
-
 
 /* Редактирование изображения:
 загрузить новую фотографию для редактирования */
