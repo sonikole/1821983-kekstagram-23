@@ -18,7 +18,8 @@ const commentsListElement = document.querySelector('.social__comments');
 
 let maxCommentsCount = 5;
 let curentOpenPhoto;
-
+const IMG_WIDTH = 35;
+const IMG_HEIGHT = 35;
 
 function removeCommentsOnPage() {
   while (commentsListElement.firstChild) {
@@ -35,8 +36,8 @@ function addCommentOnPage(comment) {
   img.classList.add('social__picture');
   img.src = comment.avatar;
   img.alt = comment.name;
-  img.width = 35;
-  img.height = 35;
+  img.width = IMG_WIDTH;
+  img.height = IMG_HEIGHT;
 
   const p = document.createElement('p');
   p.classList.add('social__text');

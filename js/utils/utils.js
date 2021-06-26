@@ -67,9 +67,6 @@ const getRandomInteger = (min, max) => {
   }
 };
 
-/* Функция для проверки максимальной длины строки. */
-const checkMaxLength = (line, maxLength) => line.length <= maxLength;
-
 
 const isEscEvent = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
 

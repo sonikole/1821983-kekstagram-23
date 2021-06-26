@@ -21,6 +21,10 @@ const sliderElement = document.querySelector('.effect-level');
 const effectsElement = document.querySelectorAll('input[name="effect"]');
 const effectValueElement = document.querySelector('.effect-level__value');
 
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+
 let currentFilter = 'none';
 
 /* Оповещение:
@@ -123,13 +127,12 @@ function removeEffectsPreview() {
 /* Редактирование изображения:
 сбросить значения полей до дефолтных */
 function setDefaultValues() {
-  //TODO: Разобраться по поводу пути дефолтного изображдения. Будет ли другой на сервере?
   newImgElement.src = 'img/upload-default-image.jpg';
 
   /* масштабирование  */
   newImgElement.style = 'transform: scale(1)';
   currentFilter = 'none';
-  scaleControlValueElement.value = '100%';
+  scaleControlValueElement.value = `${SCALE_MAX}%`;
   scaleControlBiggerElement.disabled = true;
 
   /* описание к фотографии */
@@ -177,22 +180,21 @@ const onEffectButton = (evt) => {
 масштабирование */
 const onScaleControlButton = (evt) => {
   let value = parseInt(scaleControlValueElement.value, 10);
-
   switch (evt.target.textContent) {
     case 'Увеличить':
-      value += 25;
+      value += SCALE_STEP;
       break;
 
     case 'Уменьшить':
-      value -= 25;
+      value -= SCALE_STEP;
       break;
   }
 
   newImgElement.style = `transform: scale(${value / 100})`;
   scaleControlValueElement.value = `${value}%`;
 
-  scaleControlBiggerElement.disabled = !(value < 100);
-  scaleControlSmallerElement.disabled = !(value > 25);
+  scaleControlBiggerElement.disabled = !(value < SCALE_MAX);
+  scaleControlSmallerElement.disabled = !(value > SCALE_MIN);
 };
 
 /* Редактирование изображения:
