@@ -1,7 +1,6 @@
 import { PHOTOS } from '../main.js';
 import { isEscEvent } from '../utils/utils.js';
 
-//TODO: Будут использоваться в других методах
 const picturesListElement = document.querySelector('.pictures');
 
 const bigPictureElement = document.querySelector('.big-picture');
@@ -14,44 +13,60 @@ const commentsListCountElement = document.querySelector('.social__comment-count'
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
-const likeElement = document.querySelector('.likes-count');
+// const likeElement = document.querySelector('.likes-count');
 
-let maxCommentsCount = 5; //TODO: Будет меняться. По ТЗ должно показываться изначально 5 комментариев, потом загружаться по +5
+const IMG_WIDTH = 35;
+const IMG_HEIGHT = 35;
 
+let maxCommentsCount = 5;
+let curentOpenPhoto;
 
-/* Просмотр фотографии:
-добавление комментариев других пользователей */
-function loadBigImgComments(comments) {
-  const count = Object.keys(comments).length;
-  const maxCount = count < maxCommentsCount ? count : maxCommentsCount;
-
-  commentsListElement.innerHTML = '';
-
-  //TODO: По ТЗ должна быть реализация. в ДЗ пока выключено
-  commentsListCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
-
-  for (let index = 0; index < maxCount; index++) {
-
-    const li = document.createElement('li');
-    li.classList.add('social__comment');
-
-    const img = document.createElement('img');
-    img.classList.add('social__picture');
-    img.src = comments[index].avatar;
-    img.alt = comments[index].name;
-    img.width = 35;
-    img.height = 35;
-
-    const p = document.createElement('p');
-    p.classList.add('social__text');
-    p.textContent = comments[index].message;
-
-    li.appendChild(img);
-    li.appendChild(p);
-    commentsListElement.appendChild(li);
+function removeCommentsOnPage() {
+  while (commentsListElement.firstChild) {
+    commentsListElement.removeChild(commentsListElement.firstChild);
   }
+  maxCommentsCount = 5;
 }
+
+function addCommentOnPage(comment) {
+  const li = document.createElement('li');
+  li.classList.add('social__comment');
+
+  const img = document.createElement('img');
+  img.classList.add('social__picture');
+  img.src = comment.avatar;
+  img.alt = comment.name;
+  img.width = IMG_WIDTH;
+  img.height = IMG_HEIGHT;
+
+  const p = document.createElement('p');
+  p.classList.add('social__text');
+  p.textContent = comment.message;
+
+  li.appendChild(img);
+  li.appendChild(p);
+  commentsListElement.appendChild(li);
+}
+
+
+const onShowMoreComments = () => {
+  const count = Object.keys(curentOpenPhoto.comments).length;
+  let showCommentsCount = commentsListElement.childElementCount;
+  let maxCount = maxCommentsCount;
+
+  if (count <= maxCommentsCount) {
+    maxCount = count;
+    commentsLoaderElement.classList.add('hidden');
+  }
+
+  for (let index = showCommentsCount; index < maxCount; index++) {
+    addCommentOnPage(curentOpenPhoto.comments[index]);
+    showCommentsCount++;
+  }
+
+  maxCommentsCount += 5;
+  commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
+};
 
 
 /* Просмотр фотографии:
@@ -60,43 +75,48 @@ const onCloseModalButton = (evt) => {
   if (isEscEvent(evt) || evt.currentTarget === bigImgCloseButtonElement) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
+      commentsLoaderElement.classList.remove('hidden');
       document.body.classList.remove('modal-open');
-      maxCommentsCount = 5;
 
+      removeCommentsOnPage();
+
+      commentsLoaderElement.removeEventListener('click', onShowMoreComments);
       bigImgCloseButtonElement.removeEventListener('click', onCloseModalButton);
       document.removeEventListener('keydown', onCloseModalButton);
     }
   }
 };
 
-const onLikeButton = (evt) => {
-  const id = evt.target.parentNode.getAttribute('id');
-  PHOTOS[id].likes++;
-  likeElement.textContent = PHOTOS[id].likes;
-  likeElement.disabled = true;
-};
+
+// const onLikeButton = (evt) => {
+//   const id = evt.target.parentNode.getAttribute('id');
+//   PHOTOS[id].likes++;
+//   likeElement.textContent = PHOTOS[id].likes;
+//   likeElement.disabled = true;
+// };
 
 
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
-  const values = PHOTOS[evt.target.parentNode.getAttribute('id')];
+  curentOpenPhoto = PHOTOS[evt.target.parentNode.getAttribute('id')];
 
   document.body.classList.add('modal-open');
 
   bigPictureElement.classList.remove('hidden');
-  bigImgElement.src = values.url;
-  bigImgElement.alt = values.description;
-  bigImgLikesElement.textContent = values.likes;
-  bigImgDescriptionElement.textContent = values.description;
+  bigImgElement.src = curentOpenPhoto.url;
+  bigImgElement.alt = curentOpenPhoto.description;
+  bigImgLikesElement.textContent = curentOpenPhoto.likes;
+  bigImgDescriptionElement.textContent = curentOpenPhoto.description;
 
-  loadBigImgComments(values.comments);
+  onShowMoreComments();
 
   //add Listeners
-  likeElement.addEventListener('click', () => {
-    onLikeButton(evt);
-  });
+  // likeElement.addEventListener('click', () => {
+  //   onLikeButton(evt);
+  // });
   bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
+  commentsLoaderElement.addEventListener('click', onShowMoreComments);
   document.addEventListener('keydown', onCloseModalButton);
 
 };
@@ -112,5 +132,7 @@ const showFullPicture = () => {
     }
   });
 };
+
+removeCommentsOnPage();
 
 export { showFullPicture };

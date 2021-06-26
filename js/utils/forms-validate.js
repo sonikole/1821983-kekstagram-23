@@ -1,14 +1,11 @@
 const newImgInputElement = document.querySelector('.img-upload__input');
-// const descriptionElement = document.querySelector('.text__description');
 const hashTagElement = document.querySelector('.text__hashtags');
 
 const MAX_HASHTAG_COUNT = 5;
 const MAX_HASHTAG_LENGTH = 20;
-// const MAX_COMMENT_LENGTH = 20;
-
 
 function isValidNewPicture(curFile) {
-  const ACCEPT = ['image/jpeg', 'image/pjpeg', 'image/png'];
+  const ACCEPT = ['image/jpeg', 'image/jpeg', 'image/png'];
   let isValid = true;
 
   if (!ACCEPT.includes(curFile.type)) {
