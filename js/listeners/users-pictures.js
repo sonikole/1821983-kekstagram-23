@@ -13,8 +13,6 @@ const commentsListCountElement = document.querySelector('.social__comment-count'
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
-// const likeElement = document.querySelector('.likes-count');
-
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 
@@ -48,7 +46,6 @@ function addCommentOnPage(comment) {
   commentsListElement.appendChild(li);
 }
 
-
 const onShowMoreComments = () => {
   const count = Object.keys(curentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
@@ -68,7 +65,6 @@ const onShowMoreComments = () => {
   commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
 };
 
-
 /* Просмотр фотографии:
 закрытие модалки */
 const onCloseModalButton = (evt) => {
@@ -86,14 +82,6 @@ const onCloseModalButton = (evt) => {
     }
   }
 };
-
-
-// const onLikeButton = (evt) => {
-//   const id = evt.target.parentNode.getAttribute('id');
-//   PHOTOS[id].likes++;
-//   likeElement.textContent = PHOTOS[id].likes;
-//   likeElement.disabled = true;
-// };
 
 
 /* Просмотр фотографии:
@@ -120,7 +108,6 @@ const onAnotherUserPicture = (evt) => {
   document.addEventListener('keydown', onCloseModalButton);
 
 };
-
 
 /* Делегирование:
 добавление обработчика не на каждое изображение, а на родителя */
