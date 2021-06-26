@@ -217,7 +217,7 @@ const sentPicture = () => {
     }
   }, { once: true });
 
-  request.send(formData);  // multipart/form-data
+  request.send(formData);
 };
 
 /* Редактирование изображения:
