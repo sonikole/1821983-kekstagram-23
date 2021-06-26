@@ -290,4 +290,5 @@ const uploadNewPicture = () => {
   });
 };
 
+
 export { uploadNewPicture };
