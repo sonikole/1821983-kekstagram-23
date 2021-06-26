@@ -45,19 +45,20 @@ function addSuccessMessage() {
 
 /* Оповещение:
 неуспешная загрузка фотографии  */
-function addErrorMessage() {
-  const templateErrorElement = document.querySelector('#error');
-  const elementElement = templateErrorElement.content.querySelector('.error');
-  const clonedElement = elementElement.cloneNode(true);
-  document.body.appendChild(clonedElement);
+//TODO: Раскомментирую при реализации ошибки запроса
+// function addErrorMessage() {
+//   const templateErrorElement = document.querySelector('#error');
+//   const elementElement = templateErrorElement.content.querySelector('.error');
+//   const clonedElement = elementElement.cloneNode(true);
+//   document.body.appendChild(clonedElement);
 
-  const errorButtonElement = document.querySelector('.error__button');
+//   const errorButtonElement = document.querySelector('.error__button');
 
-  errorButtonElement.addEventListener('click', () => {
-    document.body.removeChild(clonedElement);
-  }, { once: true });
+//   errorButtonElement.addEventListener('click', () => {
+//     document.body.removeChild(clonedElement);
+//   }, { once: true });
 
-}
+// }
 
 /* Редактирование изображения:
 ввод хеш-тег  */
