@@ -1,13 +1,5 @@
-import { generatePhotos } from './utils/data.js';
-import { generateUsersPictures } from './utils/generate-data.js';
+import { loadUsersPictures } from './utils/load-pictures.js';
 import { uploadNewPicture } from './listeners/new-picture.js';
-import { showFullPicture } from './listeners/users-pictures.js';
 
-const PHOTOS_COUNT = 21;
-const PHOTOS = generatePhotos(PHOTOS_COUNT);
-generateUsersPictures(PHOTOS);
-
-showFullPicture();
+loadUsersPictures();
 uploadNewPicture();
-
-export { PHOTOS };
