@@ -1,6 +1,12 @@
 import { photos } from '../utils/load-pictures.js';
 import { isEscEvent } from '../utils/utils.js';
 
+const IMG_WIDTH = 35;
+const IMG_HEIGHT = 35;
+const COMMENT_STEP = 5;
+
+const picturesListElement = document.querySelector('.pictures');
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
@@ -11,20 +17,21 @@ const commentsListCountElement = document.querySelector('.social__comment-count'
 const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
-const IMG_WIDTH = 35;
-const IMG_HEIGHT = 35;
-
 let maxCommentsCount = 5;
 let curentOpenPhoto;
 
-function removeCommentsOnPage() {
+/* Просмотр фотографии:
+очистка комментариев со страницы*/
+const removeCommentsOnPage = () => {
   while (commentsListElement.firstChild) {
     commentsListElement.removeChild(commentsListElement.firstChild);
   }
-  maxCommentsCount = 5;
-}
+  maxCommentsCount = COMMENT_STEP;
+};
 
-function addCommentOnPage(comment) {
+/* Просмотр фотографии:
+добавить комментарии */
+const addCommentOnPage = (comment) => {
   const li = document.createElement('li');
   li.classList.add('social__comment');
 
@@ -42,8 +49,10 @@ function addCommentOnPage(comment) {
   li.appendChild(img);
   li.appendChild(p);
   commentsListElement.appendChild(li);
-}
+};
 
+/* Просмотр фотографии:
+показать больше комментариев */
 const onShowMoreComments = () => {
   const count = Object.keys(curentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
@@ -59,7 +68,7 @@ const onShowMoreComments = () => {
     showCommentsCount++;
   }
 
-  maxCommentsCount += 5;
+  maxCommentsCount += COMMENT_STEP;
   commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
 };
 
@@ -81,11 +90,10 @@ const onCloseModalButton = (evt) => {
   }
 };
 
-
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
-  const id = parseInt(evt.target.parentNode.getAttribute('id'), 10);
+  const id = parseInt(evt.target.parentNode.id, 10);
   curentOpenPhoto = photos.find((photo) => photo.id === id);
 
   document.body.classList.add('modal-open');
@@ -98,10 +106,6 @@ const onAnotherUserPicture = (evt) => {
 
   onShowMoreComments();
 
-  //add Listeners
-  // likeElement.addEventListener('click', () => {
-  //   onLikeButton(evt);
-  // });
   bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
   commentsLoaderElement.addEventListener('click', onShowMoreComments);
   document.addEventListener('keydown', onCloseModalButton);
@@ -111,7 +115,6 @@ const onAnotherUserPicture = (evt) => {
 /* Делегирование:
 добавление обработчика не на каждое изображение, а на родителя */
 const showFullPicture = () => {
-  const picturesListElement = document.querySelector('.pictures');
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {
