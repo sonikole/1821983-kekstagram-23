@@ -1,6 +1,9 @@
 import { isEscEvent, isActiveElement, FILTERS_VALUES } from '../utils/utils.js';
 import { isValidNewPicture, isValidHashTag } from '../utils/forms-validate.js';
+import { addErrorMessage, addSuccessMessage } from '../utils/messages.js';
 
+const URL_SEND = 'https://23.javascript.pages.academy/kekstagram';
+const STATUS_OK = 200;
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
@@ -26,43 +29,12 @@ const effectsElement = document.querySelectorAll('input[name="effect"]');
 const effectValueElement = document.querySelector('.effect-level__value');
 
 let currentFilter = 'none';
+let curFile;
 
-/* Оповещение:
-успешная загрузка фотографии  */
-function addSuccessMessage() {
-  const templateSuccessElement = document.querySelector('#success');
-  const elementElement = templateSuccessElement.content.querySelector('.success');
-  const clonedElement = elementElement.cloneNode(true);
-  document.body.appendChild(clonedElement);
-
-  const successButtonElement = document.querySelector('.success__button');
-
-  successButtonElement.addEventListener('click', () => {
-    document.body.removeChild(clonedElement);
-  }, { once: true });
-
-}
-
-/* Оповещение:
-неуспешная загрузка фотографии  */
-//TODO: Раскомментирую при реализации ошибки запроса
-// function addErrorMessage() {
-//   const templateErrorElement = document.querySelector('#error');
-//   const elementElement = templateErrorElement.content.querySelector('.error');
-//   const clonedElement = elementElement.cloneNode(true);
-//   document.body.appendChild(clonedElement);
-
-//   const errorButtonElement = document.querySelector('.error__button');
-
-//   errorButtonElement.addEventListener('click', () => {
-//     document.body.removeChild(clonedElement);
-//   }, { once: true });
-
-// }
 
 /* Редактирование изображения:
 ввод хеш-тег  */
-function addHashTag(evt) {
+const addHashTag = (evt) => {
   const regex = /[^A-zА-я0-9 ]/g;
   let str = evt.currentTarget.value;
   str = str.replace(regex, '');
@@ -70,18 +42,17 @@ function addHashTag(evt) {
   const tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#$1');
   evt.currentTarget.value = tagged;
   isValidHashTag(tagged);
-}
+};
 
 /* Редактирование изображения:
 ввод описания к фотографии */
-function addDescription(evt) {
-  //TODO: Валидация
+const addDescription = (evt) => {
   evt.currentTarget.textContent = evt.currentTarget.value;
-}
+};
 
 /* Глубина фильтра изображения:
 обновить значения глубины эффекта  */
-function updateEffectDepthValue() {
+const updateEffectDepthValue = () => {
   if (currentFilter === 'none') {
     newImgElement.style.filter = currentFilter;
   }
@@ -90,11 +61,11 @@ function updateEffectDepthValue() {
     effectValueElement.value = sliderElement.noUiSlider.get();
     newImgElement.style.filter = `${filterType.filterName}(${effectValueElement.value}${filterType.filterValueType})`;
   }
-}
+};
 
 /* Глубина фильтра изображения:
 создание слайдера  */
-function createEffectSlider() {
+const createEffectSlider = () => {
   const settings = {
     start: 0,
     connect: 'lower',
@@ -114,20 +85,20 @@ function createEffectSlider() {
     updateEffectDepthValue();
   });
   sliderElement.classList.add('hidden');
-}
+};
 
 /* Редактирование изображения:
 сброс эффекта  */
-function removeEffectsPreview() {
+const removeEffectsPreview = () => {
   document.querySelectorAll('.effects__radio').forEach((item) => {
     newImgElement.classList.remove(`effects__preview--${item.value}`);
   });
   updateEffectDepthValue();
-}
+};
 
 /* Редактирование изображения:
 сбросить значения полей до дефолтных */
-function setDefaultValues() {
+const setDefaultValues = () => {
   newImgElement.src = 'img/upload-default-image.jpg';
 
   /* масштабирование  */
@@ -138,6 +109,7 @@ function setDefaultValues() {
 
   /* описание к фотографии */
   descriptionElement.textContent = '';
+  descriptionElement.value = '';
 
   /* хеш-теги */
   hashTagElement.value = '';
@@ -150,12 +122,11 @@ function setDefaultValues() {
 
   /* сбросить изображение  */
   newImgInputElement.value = null;
-}
+};
 
 /* Редактирование изображения:
 переключение эффекта  */
 const onEffectButton = (evt) => {
-
   currentFilter = evt.currentTarget.value;
   if (currentFilter !== 'none') {
     sliderElement.classList.remove('hidden');
@@ -200,8 +171,29 @@ const onScaleControlButton = (evt) => {
 
 /* Редактирование изображения:
 проверить валидность перед отправкой изображения на сервер */
-function checkBeforeSubmit(evt) {
+const sentPicture = () => {
+  const formElement = document.querySelector('.img-upload__form');
+  const formData = new FormData(formElement);
 
+  const request = new XMLHttpRequest();
+  request.open('POST', URL_SEND);
+
+  request.addEventListener('load', () => {
+    closeModal();
+    if (request.status === STATUS_OK) {
+      addSuccessMessage();
+    }
+    else {
+      addErrorMessage();
+    }
+  }, { once: true });
+
+  request.send(formData);
+};
+
+/* Редактирование изображения:
+Валидация текстовых полей перед отправкой формы */
+const onSubmitButton = (evt) => {
   if (!hashTagElement.validity.valid) {
     hashTagElement.classList.add('error_hashtags');
     setTimeout(() => {
@@ -210,15 +202,8 @@ function checkBeforeSubmit(evt) {
   }
   else {
     evt.preventDefault();
-    closeModal();
-    addSuccessMessage();
+    sentPicture();
   }
-}
-
-/* Редактирование изображения:
-Валидация текстовых полей перед отправкой формы */
-const onSubmitButton = (evt) => {
-  checkBeforeSubmit(evt);
 };
 
 /* Редактирование изображения:
@@ -257,7 +242,7 @@ function closeModal() {
 /* Редактирование изображения:
 загрузить новую фотографию для редактирования */
 const onLoadNewPicture = () => {
-  const curFile = newImgInputElement.files[0];
+  curFile = newImgInputElement.files[0];
   const isValid = isValidNewPicture(curFile);
 
   if (isValid) {
