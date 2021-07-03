@@ -18,7 +18,7 @@ const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
 let maxCommentsCount = 5;
-let curentOpenPhoto;
+let currentOpenPhoto;
 
 /* Просмотр фотографии:
 очистка комментариев со страницы*/
@@ -54,7 +54,7 @@ const addCommentOnPage = (comment) => {
 /* Просмотр фотографии:
 показать больше комментариев */
 const onShowMoreComments = () => {
-  const count = Object.keys(curentOpenPhoto.comments).length;
+  const count = Object.keys(currentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
   let maxCount = maxCommentsCount;
 
@@ -64,7 +64,7 @@ const onShowMoreComments = () => {
   }
 
   for (let index = showCommentsCount; index < maxCount; index++) {
-    addCommentOnPage(curentOpenPhoto.comments[index]);
+    addCommentOnPage(currentOpenPhoto.comments[index]);
     showCommentsCount++;
   }
 
@@ -94,15 +94,15 @@ const onCloseModalButton = (evt) => {
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
   const id = parseInt(evt.target.parentNode.id, 10);
-  curentOpenPhoto = photos.find((photo) => photo.id === id);
+  currentOpenPhoto = photos.find((photo) => photo.id === id);
 
   document.body.classList.add('modal-open');
 
   bigPictureElement.classList.remove('hidden');
-  bigImgElement.src = curentOpenPhoto.url;
-  bigImgElement.alt = curentOpenPhoto.description;
-  bigImgLikesElement.textContent = curentOpenPhoto.likes;
-  bigImgDescriptionElement.textContent = curentOpenPhoto.description;
+  bigImgElement.src = currentOpenPhoto.url;
+  bigImgElement.alt = currentOpenPhoto.description;
+  bigImgLikesElement.textContent = currentOpenPhoto.likes;
+  bigImgDescriptionElement.textContent = currentOpenPhoto.description;
 
   onShowMoreComments();
 
