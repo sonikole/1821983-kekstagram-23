@@ -1,5 +1,6 @@
 import { isEscEvent, isActiveElement, FILTERS_VALUES } from '../utils/utils.js';
 import { isValidNewPicture, isValidHashTag } from '../utils/forms-validate.js';
+import { addErrorMessage, addSuccessMessage } from '../utils/messages.js';
 
 const URL_SEND = 'https://23.javascript.pages.academy/kekstagram';
 const STATUS_OK = 200;
@@ -30,35 +31,6 @@ const effectValueElement = document.querySelector('.effect-level__value');
 let currentFilter = 'none';
 let curFile;
 
-/* Оповещение:
-успешная загрузка фотографии  */
-const addSuccessMessage = () => {
-  const templateSuccessElement = document.querySelector('#success');
-  const elementElement = templateSuccessElement.content.querySelector('.success');
-  const clonedElement = elementElement.cloneNode(true);
-  document.body.appendChild(clonedElement);
-
-  const successButtonElement = document.querySelector('.success__button');
-
-  successButtonElement.addEventListener('click', () => {
-    document.body.removeChild(clonedElement);
-  }, { once: true });
-};
-
-/* Оповещение:
-неуспешная загрузка фотографии  */
-const addErrorMessage = () => {
-  const templateErrorElement = document.querySelector('#error');
-  const elementElement = templateErrorElement.content.querySelector('.error');
-  const clonedElement = elementElement.cloneNode(true);
-  document.body.appendChild(clonedElement);
-
-  const errorButtonElement = document.querySelector('.error__button');
-
-  errorButtonElement.addEventListener('click', () => {
-    document.body.removeChild(clonedElement);
-  }, { once: true });
-};
 
 /* Редактирование изображения:
 ввод хеш-тег  */

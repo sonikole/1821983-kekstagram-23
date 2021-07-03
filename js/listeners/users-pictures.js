@@ -5,6 +5,8 @@ const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 const COMMENT_STEP = 5;
 
+const picturesListElement = document.querySelector('.pictures');
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
 const bigImgLikesElement = document.querySelector('.likes-count');
@@ -113,7 +115,6 @@ const onAnotherUserPicture = (evt) => {
 /* Делегирование:
 добавление обработчика не на каждое изображение, а на родителя */
 const showFullPicture = () => {
-  const picturesListElement = document.querySelector('.pictures');
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {

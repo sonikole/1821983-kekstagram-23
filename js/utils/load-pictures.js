@@ -1,4 +1,5 @@
 import { showFullPicture } from '../listeners/users-pictures.js';
+import { addErrorMessage } from './messages.js';
 
 const URL_DATA = 'https://23.javascript.pages.academy/kekstagram/data';
 const ACTIVE_CLASS = 'img-filters__button--active';
@@ -10,23 +11,6 @@ const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
 let photos;
-
-/* Оповещение:
-неуспешная загрузка фотографий с сервера  */
-const addErrorMessage = (errorMessage, buttonMessage) => {
-  const templateErrorElement = document.querySelector('#error');
-  const elementElement = templateErrorElement.content.querySelector('.error');
-  const clonedElement = elementElement.cloneNode(true);
-  clonedElement.querySelector('.error__title').innerText = errorMessage;
-  clonedElement.querySelector('.error__button').textContent = buttonMessage;
-  document.body.appendChild(clonedElement);
-
-  const errorButtonElement = document.querySelector('.error__button');
-
-  errorButtonElement.addEventListener('click', () => {
-    document.body.removeChild(clonedElement);
-  }, { once: true });
-};
 
 /* Загрузка фотографий других пользователей:
 добавление фотографий других пользователей на главнй экран  */
