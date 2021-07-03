@@ -47,7 +47,6 @@ const addHashTag = (evt) => {
 /* Редактирование изображения:
 ввод описания к фотографии */
 const addDescription = (evt) => {
-  //TODO: Валидация
   evt.currentTarget.textContent = evt.currentTarget.value;
 };
 

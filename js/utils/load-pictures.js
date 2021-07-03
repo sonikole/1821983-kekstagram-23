@@ -76,7 +76,7 @@ const onDiscussedFilter = () => {
 
 /* Фильтрация:
 включаем фильтрацию */
-const filterUsersPictures = () => {
+const showFilterUsersPictures = () => {
   imgFilters.classList.remove('img-filters--inactive');
 
   defaultFilter.addEventListener('click', onDefaultFilter);
@@ -98,7 +98,7 @@ const loadUsersPictures = () => {
 
       addImgInDocument();
       showFullPicture();
-      filterUsersPictures();
+      showFilterUsersPictures();
     }
     else {
       const errorMessage = 'Ошибка запроса:\nНевозможно загрузить данные.\nПовторите попытку позже или обратитесь в техническую поддержку';
