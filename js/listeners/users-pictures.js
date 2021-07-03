@@ -3,6 +3,7 @@ import { isEscEvent } from '../utils/utils.js';
 
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
+const COMMENT_STEP = 5;
 
 const bigPictureElement = document.querySelector('.big-picture');
 const bigImgElement = bigPictureElement.querySelector('img');
@@ -23,7 +24,7 @@ const removeCommentsOnPage = () => {
   while (commentsListElement.firstChild) {
     commentsListElement.removeChild(commentsListElement.firstChild);
   }
-  maxCommentsCount = 5;
+  maxCommentsCount = COMMENT_STEP;
 };
 
 /* Просмотр фотографии:
@@ -65,7 +66,7 @@ const onShowMoreComments = () => {
     showCommentsCount++;
   }
 
-  maxCommentsCount += 5;
+  maxCommentsCount += COMMENT_STEP;
   commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
 };
 
@@ -90,7 +91,7 @@ const onCloseModalButton = (evt) => {
 /* Просмотр фотографии:
 открытие большой фотографии */
 const onAnotherUserPicture = (evt) => {
-  const id = parseInt(evt.target.parentNode.getAttribute('id'), 10);
+  const id = parseInt(evt.target.parentNode.id, 10);
   curentOpenPhoto = photos.find((photo) => photo.id === id);
 
   document.body.classList.add('modal-open');
