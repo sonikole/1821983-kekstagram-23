@@ -177,9 +177,9 @@ const sentPicture = () => {
 
   const request = new XMLHttpRequest();
   request.open('POST', URL_SEND);
-
   request.addEventListener('load', () => {
     closeModal();
+
     if (request.status === STATUS_OK) {
       addSuccessMessage();
     }
@@ -221,11 +221,10 @@ const onCloseModalButton = (evt) => {
 /* Редактирование изображения:
 закрытие модалки и сброс настроек */
 function closeModal() {
+  setDefaultValues();
 
   newImgOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-
-  setDefaultValues();
 
   newImgSubmitElement.removeEventListener('click', onSubmitButton);
   scaleControlBiggerElement.removeEventListener('click', onScaleControlButton);/* масштабирование + */
