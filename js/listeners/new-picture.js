@@ -8,7 +8,6 @@ const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 
-//TODO: Раскидать по модулям, если необходимо
 const newImgInputElement = document.querySelector('.img-upload__input');
 const newImgCloseElement = document.querySelector('.img-upload__cancel');
 const newImgSubmitElement = document.querySelector('.img-upload__submit');
@@ -30,7 +29,6 @@ const effectValueElement = document.querySelector('.effect-level__value');
 
 let currentFilter = 'none';
 let curFile;
-
 
 /* Редактирование изображения:
 ввод хеш-тег  */
@@ -192,7 +190,7 @@ const sentPicture = () => {
 };
 
 /* Редактирование изображения:
-Валидация текстовых полей перед отправкой формы */
+валидация текстовых полей перед отправкой формы */
 const onSubmitButton = (evt) => {
   if (!hashTagElement.validity.valid) {
     hashTagElement.classList.add('error_hashtags');
@@ -227,12 +225,12 @@ function closeModal() {
   document.body.classList.remove('modal-open');
 
   newImgSubmitElement.removeEventListener('click', onSubmitButton);
-  scaleControlBiggerElement.removeEventListener('click', onScaleControlButton);/* масштабирование + */
-  scaleControlSmallerElement.removeEventListener('click', onScaleControlButton);/* масштабирование - */
+  scaleControlBiggerElement.removeEventListener('click', onScaleControlButton); /* масштабирование + */
+  scaleControlSmallerElement.removeEventListener('click', onScaleControlButton); /* масштабирование - */
   descriptionElement.removeEventListener('keyup', addDescription);/* описание к фотографии */
-  hashTagElement.removeEventListener('keyup', addHashTag);/* хеш-теги */
+  hashTagElement.removeEventListener('keyup', addHashTag); /* хеш-теги */
   effectsElement.forEach((effect) => {
-    effect.removeEventListener('change', onEffectButton);/* эффект  */
+    effect.removeEventListener('change', onEffectButton); /* эффект  */
   });
   newImgCloseElement.removeEventListener('click', onCloseModalButton); /* закрытие модалки */
   document.removeEventListener('keydown', onCloseModalButton); /* закрытие модалки */
@@ -257,13 +255,13 @@ const onLoadNewPicture = () => {
     effectsElement.forEach((effect) => {
       effect.addEventListener('change', onEffectButton); /* выбор эффекта */
     });
-    scaleControlBiggerElement.addEventListener('click', onScaleControlButton);/* масштабирование + */
-    scaleControlSmallerElement.addEventListener('click', onScaleControlButton);/* масштабирование - */
-    descriptionElement.addEventListener('keyup', addDescription);/* добавить описание к фотографии */
+    scaleControlBiggerElement.addEventListener('click', onScaleControlButton); /* масштабирование + */
+    scaleControlSmallerElement.addEventListener('click', onScaleControlButton); /* масштабирование - */
+    descriptionElement.addEventListener('keyup', addDescription); /* добавить описание к фотографии */
     hashTagElement.addEventListener('keyup', addHashTag); /* добавить хеш-теги */
-    newImgCloseElement.addEventListener('click', onCloseModalButton);/* закрытие модалки */
-    document.addEventListener('keydown', onCloseModalButton);/* закрытие модалки */
-    newImgSubmitElement.addEventListener('click', onSubmitButton);/* отправить изображение */
+    newImgCloseElement.addEventListener('click', onCloseModalButton); /* закрытие модалки */
+    document.addEventListener('keydown', onCloseModalButton); /* закрытие модалки */
+    newImgSubmitElement.addEventListener('click', onSubmitButton); /* отправить изображение */
   }
 };
 

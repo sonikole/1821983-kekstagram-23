@@ -7,10 +7,11 @@ let messageInnerElement;
 let messageButtonElement;
 
 /* Оповещение:
-Закрытие сообщения */
+закрытие сообщения */
 const onCloseMessage = (evt) => {
   const target = evt.target;
   const itsSection = target === messageInnerElement || messageInnerElement.contains(target);
+
   if (isEscEvent(evt) || isActiveElement(messageButtonElement) || !itsSection) {
 
     document.body.removeChild(messageSectionElement);
@@ -37,7 +38,6 @@ const addSuccessMessage = () => {
   document.addEventListener('keydown', onCloseMessage);
   document.addEventListener('click', onCloseMessage);
 };
-
 
 /* Оповещение:
 сообщение об ошибке */
