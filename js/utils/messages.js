@@ -7,17 +7,18 @@ let messageInnerElement;
 let messageButtonElement;
 
 /* Оповещение:
-Закрытие сообщения */
-const onCloseMessage = (evt) => {
+закрытие сообщения */
+const clickCloseMessage = (evt) => {
   const target = evt.target;
   const itsSection = target === messageInnerElement || messageInnerElement.contains(target);
+
   if (isEscEvent(evt) || isActiveElement(messageButtonElement) || !itsSection) {
 
     document.body.removeChild(messageSectionElement);
 
-    messageButtonElement.removeEventListener('click', onCloseMessage);
-    document.removeEventListener('keydown', onCloseMessage);
-    document.removeEventListener('click', onCloseMessage);
+    messageButtonElement.removeEventListener('click', clickCloseMessage);
+    document.removeEventListener('keydown', clickCloseMessage);
+    document.removeEventListener('click', clickCloseMessage);
   }
 };
 
@@ -33,11 +34,10 @@ const addSuccessMessage = () => {
   messageInnerElement = document.querySelector('.success__inner');
   messageButtonElement = document.querySelector('.success__button');
 
-  messageButtonElement.addEventListener('click', onCloseMessage);
-  document.addEventListener('keydown', onCloseMessage);
-  document.addEventListener('click', onCloseMessage);
+  messageButtonElement.addEventListener('click', clickCloseMessage);
+  document.addEventListener('keydown', clickCloseMessage);
+  document.addEventListener('click', clickCloseMessage);
 };
-
 
 /* Оповещение:
 сообщение об ошибке */
@@ -58,9 +58,9 @@ const addErrorMessage = (errorMessage, buttonMessage) => {
   messageInnerElement = document.querySelector('.error__inner');
   messageButtonElement = document.querySelector('.error__button');
 
-  messageButtonElement.addEventListener('click', onCloseMessage);
-  document.addEventListener('keydown', onCloseMessage);
-  document.addEventListener('click', onCloseMessage);
+  messageButtonElement.addEventListener('click', clickCloseMessage);
+  document.addEventListener('keydown', clickCloseMessage);
+  document.addEventListener('click', clickCloseMessage);
 };
 
 export { addErrorMessage,  addSuccessMessage};
