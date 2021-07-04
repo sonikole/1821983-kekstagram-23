@@ -26,7 +26,7 @@ let curFile;
 
 /* Редактирование изображения:
 проверить валидность перед отправкой изображения на сервер */
-const sentPicture = () => {
+const sendPicture = () => {
   const formElement = document.querySelector('.img-upload__form');
   const formData = new FormData(formElement);
 
@@ -57,7 +57,7 @@ const clickSubmitButton = (evt) => {
   }
   else {
     evt.preventDefault();
-    sentPicture();
+    sendPicture();
     newImgSubmitElement.removeEventListener('click', clickSubmitButton); /* опубликовать */
     newImgCloseElement.removeEventListener('click', clickCloseModalButton); /* закрытие модалки */
     document.removeEventListener('keydown', clickCloseModalButton); /* закрытие модалки */
