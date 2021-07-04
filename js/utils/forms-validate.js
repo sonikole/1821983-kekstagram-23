@@ -7,10 +7,10 @@ const hashTagElement = document.querySelector('.text__hashtags');
 /* Валидация:
 тип фотографии  */
 const isValidNewPicture = (curFile) => {
-  const ACCEPT = ['image/jpeg', 'image/jpeg', 'image/png'];
+  const formats = ['image/jpeg', 'image/jpeg', 'image/png'];
   let isValid = true;
 
-  if (!ACCEPT.includes(curFile.type)) {
+  if (!formats.includes(curFile.type)) {
     newImgInputElement.setCustomValidity('Недопустимый тип изображения');
     isValid = false;
   }
@@ -44,17 +44,17 @@ const isValidHashTag = (value) => {
   });
 
   if (!hashTags.every((v, i) => v === uniqueHashTags[i])) {
-    const output = [];
+    const duplicates = [];
 
     for (let i = 0; i < hashTags.length - 1; i++) {
       for (let j = i + 1; j < hashTags.length; j++) {
         if (hashTags[i] === hashTags[j]) {
-          output.push(hashTags[i]);
+          duplicates.push(hashTags[i]);
         }
       }
     }
     isValid = false;
-    message += `\n(!): запрещены повторяющиеся хеш-теги: "${output.join(', "')}"`;
+    message += `\n(!): запрещены повторяющиеся хеш-теги: "${duplicates.join(', "')}"`;
   }
 
   if (re.test(value) && isValid) {

@@ -130,7 +130,7 @@ const onEffectButton = (evt) => {
     sliderElement.classList.remove('hidden');
 
     sliderElement.noUiSlider.updateOptions({
-      start: [FILTERS_VALUES[currentFilter].filterMaxValue],
+      start: FILTERS_VALUES[currentFilter].filterMaxValue,
       step: FILTERS_VALUES[currentFilter].filterStep,
       range: {
         min: FILTERS_VALUES[currentFilter].filterMinValue,
