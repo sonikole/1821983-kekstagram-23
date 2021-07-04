@@ -8,7 +8,7 @@ let messageButtonElement;
 
 /* Оповещение:
 закрытие сообщения */
-const onCloseMessage = (evt) => {
+const clickCloseMessage = (evt) => {
   const target = evt.target;
   const itsSection = target === messageInnerElement || messageInnerElement.contains(target);
 
@@ -16,9 +16,9 @@ const onCloseMessage = (evt) => {
 
     document.body.removeChild(messageSectionElement);
 
-    messageButtonElement.removeEventListener('click', onCloseMessage);
-    document.removeEventListener('keydown', onCloseMessage);
-    document.removeEventListener('click', onCloseMessage);
+    messageButtonElement.removeEventListener('click', clickCloseMessage);
+    document.removeEventListener('keydown', clickCloseMessage);
+    document.removeEventListener('click', clickCloseMessage);
   }
 };
 
@@ -34,9 +34,9 @@ const addSuccessMessage = () => {
   messageInnerElement = document.querySelector('.success__inner');
   messageButtonElement = document.querySelector('.success__button');
 
-  messageButtonElement.addEventListener('click', onCloseMessage);
-  document.addEventListener('keydown', onCloseMessage);
-  document.addEventListener('click', onCloseMessage);
+  messageButtonElement.addEventListener('click', clickCloseMessage);
+  document.addEventListener('keydown', clickCloseMessage);
+  document.addEventListener('click', clickCloseMessage);
 };
 
 /* Оповещение:
@@ -58,9 +58,9 @@ const addErrorMessage = (errorMessage, buttonMessage) => {
   messageInnerElement = document.querySelector('.error__inner');
   messageButtonElement = document.querySelector('.error__button');
 
-  messageButtonElement.addEventListener('click', onCloseMessage);
-  document.addEventListener('keydown', onCloseMessage);
-  document.addEventListener('click', onCloseMessage);
+  messageButtonElement.addEventListener('click', clickCloseMessage);
+  document.addEventListener('keydown', clickCloseMessage);
+  document.addEventListener('click', clickCloseMessage);
 };
 
 export { addErrorMessage,  addSuccessMessage};

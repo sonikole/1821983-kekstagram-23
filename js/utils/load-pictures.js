@@ -46,7 +46,7 @@ const removeActiveFilter = () => {
 
 /* Фильтрация:
 дефолтная фильтрация */
-const onDefaultFilter = () => {
+const clickDefaultFilter = () => {
   removeActiveFilter();
   defaultFilter.classList.add(ACTIVE_CLASS);
   defaultFilter.disabled = true;
@@ -57,7 +57,7 @@ const onDefaultFilter = () => {
 
 /* Фильтрация:
 рандомная фильтрация */
-const onRandomFilter = () => {
+const clickRandomFilter = () => {
   removeActiveFilter();
   randomFilter.classList.add(ACTIVE_CLASS);
   randomFilter.disabled = true;
@@ -68,7 +68,7 @@ const onRandomFilter = () => {
 
 /* Фильтрация:
 обсуждаемая фильтрация */
-const onDiscussedFilter = () => {
+const clickDiscussedFilter = () => {
   removeActiveFilter();
   discussedFilter.classList.add(ACTIVE_CLASS);
   discussedFilter.disabled = true;
@@ -82,9 +82,9 @@ const onDiscussedFilter = () => {
 const showFilterUsersPictures = () => {
   imgFilters.classList.remove('img-filters--inactive');
 
-  defaultFilter.addEventListener('click', onDefaultFilter);
-  randomFilter.addEventListener('click', onRandomFilter);
-  discussedFilter.addEventListener('click', onDiscussedFilter);
+  defaultFilter.addEventListener('click', clickDefaultFilter);
+  randomFilter.addEventListener('click', clickRandomFilter);
+  discussedFilter.addEventListener('click', clickDiscussedFilter);
 };
 
 /* Загрузка фотографий других пользователей:

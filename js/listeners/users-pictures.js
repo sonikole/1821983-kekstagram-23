@@ -53,7 +53,7 @@ const addCommentOnPage = (comment) => {
 
 /* Просмотр фотографии:
 показать больше комментариев */
-const onShowMoreComments = () => {
+const clickShowMoreComments = () => {
   const count = Object.keys(currentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
   let maxCount = maxCommentsCount;
@@ -74,7 +74,7 @@ const onShowMoreComments = () => {
 
 /* Просмотр фотографии:
 закрытие модалки */
-const onCloseModalButton = (evt) => {
+const clickCloseModalButton = (evt) => {
   if (isEscEvent(evt) || evt.currentTarget === bigImgCloseButtonElement) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
@@ -83,16 +83,16 @@ const onCloseModalButton = (evt) => {
 
       removeCommentsOnPage();
 
-      commentsLoaderElement.removeEventListener('click', onShowMoreComments);
-      bigImgCloseButtonElement.removeEventListener('click', onCloseModalButton);
-      document.removeEventListener('keydown', onCloseModalButton);
+      commentsLoaderElement.removeEventListener('click', clickShowMoreComments);
+      bigImgCloseButtonElement.removeEventListener('click', clickCloseModalButton);
+      document.removeEventListener('keydown', clickCloseModalButton);
     }
   }
 };
 
 /* Просмотр фотографии:
 открытие большой фотографии */
-const onAnotherUserPicture = (evt) => {
+const clickAnotherUserPicture = (evt) => {
   const id = parseInt(evt.target.parentNode.id, 10);
   currentOpenPhoto = photos.find((photo) => photo.id === id);
 
@@ -104,11 +104,11 @@ const onAnotherUserPicture = (evt) => {
   bigImgLikesElement.textContent = currentOpenPhoto.likes;
   bigImgDescriptionElement.textContent = currentOpenPhoto.description;
 
-  onShowMoreComments();
+  clickShowMoreComments();
 
-  bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
-  commentsLoaderElement.addEventListener('click', onShowMoreComments);
-  document.addEventListener('keydown', onCloseModalButton);
+  bigImgCloseButtonElement.addEventListener('click', clickCloseModalButton);
+  commentsLoaderElement.addEventListener('click', clickShowMoreComments);
+  document.addEventListener('keydown', clickCloseModalButton);
 
 };
 
@@ -118,7 +118,7 @@ const showFullPicture = () => {
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {
-      onAnotherUserPicture(evt);
+      clickAnotherUserPicture(evt);
     }
   });
 };

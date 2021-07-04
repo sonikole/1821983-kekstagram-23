@@ -124,7 +124,7 @@ const setDefaultValues = () => {
 
 /* Редактирование изображения:
 переключение эффекта  */
-const onEffectButton = (evt) => {
+const clickEffectButton = (evt) => {
   currentFilter = evt.currentTarget.value;
   if (currentFilter !== 'none') {
     sliderElement.classList.remove('hidden');
@@ -148,7 +148,7 @@ const onEffectButton = (evt) => {
 
 /* Редактирование изображения:
 масштабирование */
-const onScaleControlButton = (evt) => {
+const clickScaleControlButton = (evt) => {
   let value = parseInt(scaleControlValueElement.value, 10);
   switch (evt.target.textContent) {
     case 'Увеличить':
@@ -191,7 +191,7 @@ const sentPicture = () => {
 
 /* Редактирование изображения:
 валидация текстовых полей перед отправкой формы */
-const onSubmitButton = (evt) => {
+const clickSubmitButton = (evt) => {
   if (!hashTagElement.validity.valid) {
     hashTagElement.classList.add('error_hashtags');
     setTimeout(() => {
@@ -206,7 +206,7 @@ const onSubmitButton = (evt) => {
 
 /* Редактирование изображения:
 закрытие модалки */
-const onCloseModalButton = (evt) => {
+const clickCloseModalButton = (evt) => {
   //если фокусировка на комментарии или хештеге
   const isActive = isActiveElement(descriptionElement) || isActiveElement(hashTagElement);
 
@@ -224,21 +224,21 @@ function closeModal() {
   newImgOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  newImgSubmitElement.removeEventListener('click', onSubmitButton);
-  scaleControlBiggerElement.removeEventListener('click', onScaleControlButton); /* масштабирование + */
-  scaleControlSmallerElement.removeEventListener('click', onScaleControlButton); /* масштабирование - */
+  newImgSubmitElement.removeEventListener('click', clickSubmitButton);
+  scaleControlBiggerElement.removeEventListener('click', clickScaleControlButton); /* масштабирование + */
+  scaleControlSmallerElement.removeEventListener('click', clickScaleControlButton); /* масштабирование - */
   descriptionElement.removeEventListener('keyup', addDescription);/* описание к фотографии */
   hashTagElement.removeEventListener('keyup', addHashTag); /* хеш-теги */
   effectsElement.forEach((effect) => {
-    effect.removeEventListener('change', onEffectButton); /* эффект  */
+    effect.removeEventListener('change', clickEffectButton); /* эффект  */
   });
-  newImgCloseElement.removeEventListener('click', onCloseModalButton); /* закрытие модалки */
-  document.removeEventListener('keydown', onCloseModalButton); /* закрытие модалки */
+  newImgCloseElement.removeEventListener('click', clickCloseModalButton); /* закрытие модалки */
+  document.removeEventListener('keydown', clickCloseModalButton); /* закрытие модалки */
 }
 
 /* Редактирование изображения:
 загрузить новую фотографию для редактирования */
-const onLoadNewPicture = () => {
+const clickLoadNewPicture = () => {
   curFile = newImgInputElement.files[0];
   const isValid = isValidNewPicture(curFile);
 
@@ -253,21 +253,21 @@ const onLoadNewPicture = () => {
     createEffectSlider();
 
     effectsElement.forEach((effect) => {
-      effect.addEventListener('change', onEffectButton); /* выбор эффекта */
+      effect.addEventListener('change', clickEffectButton); /* выбор эффекта */
     });
-    scaleControlBiggerElement.addEventListener('click', onScaleControlButton); /* масштабирование + */
-    scaleControlSmallerElement.addEventListener('click', onScaleControlButton); /* масштабирование - */
+    scaleControlBiggerElement.addEventListener('click', clickScaleControlButton); /* масштабирование + */
+    scaleControlSmallerElement.addEventListener('click', clickScaleControlButton); /* масштабирование - */
     descriptionElement.addEventListener('keyup', addDescription); /* добавить описание к фотографии */
     hashTagElement.addEventListener('keyup', addHashTag); /* добавить хеш-теги */
-    newImgCloseElement.addEventListener('click', onCloseModalButton); /* закрытие модалки */
-    document.addEventListener('keydown', onCloseModalButton); /* закрытие модалки */
-    newImgSubmitElement.addEventListener('click', onSubmitButton); /* отправить изображение */
+    newImgCloseElement.addEventListener('click', clickCloseModalButton); /* закрытие модалки */
+    document.addEventListener('keydown', clickCloseModalButton); /* закрытие модалки */
+    newImgSubmitElement.addEventListener('click', clickSubmitButton); /* отправить изображение */
   }
 };
 
 const uploadNewPicture = () => {
   newImgInputElement.addEventListener('change', () => {
-    onLoadNewPicture();
+    clickLoadNewPicture();
   });
 };
 
