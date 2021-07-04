@@ -69,7 +69,7 @@ const clickShowMoreComments = () => {
   }
 
   maxCommentsCount += COMMENT_STEP;
-  commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
+  commentsListCountElement.textContent = `${showCommentsCount} из ${count} комментариев`;
 };
 
 /* Просмотр фотографии:
