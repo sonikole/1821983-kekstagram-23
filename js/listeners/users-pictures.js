@@ -18,7 +18,7 @@ const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsListElement = document.querySelector('.social__comments');
 
 let maxCommentsCount = 5;
-let curentOpenPhoto;
+let currentOpenPhoto;
 
 /* Просмотр фотографии:
 очистка комментариев со страницы*/
@@ -53,8 +53,8 @@ const addCommentOnPage = (comment) => {
 
 /* Просмотр фотографии:
 показать больше комментариев */
-const onShowMoreComments = () => {
-  const count = Object.keys(curentOpenPhoto.comments).length;
+const clickShowMoreComments = () => {
+  const count = Object.keys(currentOpenPhoto.comments).length;
   let showCommentsCount = commentsListElement.childElementCount;
   let maxCount = maxCommentsCount;
 
@@ -64,17 +64,17 @@ const onShowMoreComments = () => {
   }
 
   for (let index = showCommentsCount; index < maxCount; index++) {
-    addCommentOnPage(curentOpenPhoto.comments[index]);
+    addCommentOnPage(currentOpenPhoto.comments[index]);
     showCommentsCount++;
   }
 
   maxCommentsCount += COMMENT_STEP;
-  commentsListCountElement.innerHTML = `${showCommentsCount} из <span class="comments-count">${count}</span> комментариев`;
+  commentsListCountElement.textContent = `${showCommentsCount} из ${count} комментариев`;
 };
 
 /* Просмотр фотографии:
 закрытие модалки */
-const onCloseModalButton = (evt) => {
+const clickCloseModalButton = (evt) => {
   if (isEscEvent(evt) || evt.currentTarget === bigImgCloseButtonElement) {
     if (!bigPictureElement.classList.contains('.hidden')) {
       bigPictureElement.classList.add('hidden');
@@ -83,32 +83,32 @@ const onCloseModalButton = (evt) => {
 
       removeCommentsOnPage();
 
-      commentsLoaderElement.removeEventListener('click', onShowMoreComments);
-      bigImgCloseButtonElement.removeEventListener('click', onCloseModalButton);
-      document.removeEventListener('keydown', onCloseModalButton);
+      commentsLoaderElement.removeEventListener('click', clickShowMoreComments);
+      bigImgCloseButtonElement.removeEventListener('click', clickCloseModalButton);
+      document.removeEventListener('keydown', clickCloseModalButton);
     }
   }
 };
 
 /* Просмотр фотографии:
 открытие большой фотографии */
-const onAnotherUserPicture = (evt) => {
+const clickAnotherUserPicture = (evt) => {
   const id = parseInt(evt.target.parentNode.id, 10);
-  curentOpenPhoto = photos.find((photo) => photo.id === id);
+  currentOpenPhoto = photos.find((photo) => photo.id === id);
 
   document.body.classList.add('modal-open');
 
   bigPictureElement.classList.remove('hidden');
-  bigImgElement.src = curentOpenPhoto.url;
-  bigImgElement.alt = curentOpenPhoto.description;
-  bigImgLikesElement.textContent = curentOpenPhoto.likes;
-  bigImgDescriptionElement.textContent = curentOpenPhoto.description;
+  bigImgElement.src = currentOpenPhoto.url;
+  bigImgElement.alt = currentOpenPhoto.description;
+  bigImgLikesElement.textContent = currentOpenPhoto.likes;
+  bigImgDescriptionElement.textContent = currentOpenPhoto.description;
 
-  onShowMoreComments();
+  clickShowMoreComments();
 
-  bigImgCloseButtonElement.addEventListener('click', onCloseModalButton);
-  commentsLoaderElement.addEventListener('click', onShowMoreComments);
-  document.addEventListener('keydown', onCloseModalButton);
+  bigImgCloseButtonElement.addEventListener('click', clickCloseModalButton);
+  commentsLoaderElement.addEventListener('click', clickShowMoreComments);
+  document.addEventListener('keydown', clickCloseModalButton);
 
 };
 
@@ -118,7 +118,7 @@ const showFullPicture = () => {
   picturesListElement.addEventListener('click', (evt) => {
     const target = evt.target.parentNode;
     if (target.tagName === 'A') {
-      onAnotherUserPicture(evt);
+      clickAnotherUserPicture(evt);
     }
   });
 };

@@ -14,7 +14,7 @@ let photos;
 
 /* Загрузка фотографий других пользователей:
 добавление фотографий других пользователей на главнй экран  */
-const addImgInDocument = () => {
+const addImgInDocument = (currentPhotos) => {
   setTimeout(() => {
     const containerElement = document.querySelector('.pictures');
     const templateElement = document.querySelector('#picture');
@@ -24,13 +24,13 @@ const addImgInDocument = () => {
       containerElement.removeChild(containerElement.querySelector('A'));
     }
 
-    for (let index = 0; index < photos.length; index++) {
+    for (let index = 0; index < currentPhotos.length; index++) {
       const clonedElement = elementElement.cloneNode(true);
-      clonedElement.id = photos[index].id;
-      clonedElement.querySelector('.picture__img').src = photos[index].url;
-      clonedElement.querySelector('.picture__img').alt = photos[index].description;
-      clonedElement.querySelector('.picture__comments').textContent = photos[index].comments.length;
-      clonedElement.querySelector('.picture__likes').textContent = photos[index].likes;
+      clonedElement.id = currentPhotos[index].id;
+      clonedElement.querySelector('.picture__img').src = currentPhotos[index].url;
+      clonedElement.querySelector('.picture__img').alt = currentPhotos[index].description;
+      clonedElement.querySelector('.picture__comments').textContent = currentPhotos[index].comments.length;
+      clonedElement.querySelector('.picture__likes').textContent = currentPhotos[index].likes;
 
       containerElement.appendChild(clonedElement);
     }
@@ -46,32 +46,35 @@ const removeActiveFilter = () => {
 
 /* Фильтрация:
 дефолтная фильтрация */
-const onDefaultFilter = () => {
+const clickDefaultFilter = () => {
   removeActiveFilter();
   defaultFilter.classList.add(ACTIVE_CLASS);
   defaultFilter.disabled = true;
-  photos.sort((a, b) => (a.id - b.id));
-  addImgInDocument();
+  const copyPhotos = photos.slice();
+  copyPhotos.sort((a, b) => (a.id - b.id));
+  addImgInDocument(copyPhotos);
 };
 
 /* Фильтрация:
 рандомная фильтрация */
-const onRandomFilter = () => {
+const clickRandomFilter = () => {
   removeActiveFilter();
   randomFilter.classList.add(ACTIVE_CLASS);
   randomFilter.disabled = true;
-  photos.sort(() => Math.random() - 0.5);
-  addImgInDocument();
+  const copyPhotos = photos.slice();
+  copyPhotos.sort(() => Math.random() - 0.5);
+  addImgInDocument(copyPhotos);
 };
 
 /* Фильтрация:
 обсуждаемая фильтрация */
-const onDiscussedFilter = () => {
+const clickDiscussedFilter = () => {
   removeActiveFilter();
   discussedFilter.classList.add(ACTIVE_CLASS);
   discussedFilter.disabled = true;
-  photos.sort((a, b) => (b.comments.length - a.comments.length));
-  addImgInDocument();
+  const copyPhotos = photos.slice();
+  copyPhotos.sort((a, b) => (b.comments.length - a.comments.length));
+  addImgInDocument(copyPhotos);
 };
 
 /* Фильтрация:
@@ -79,9 +82,9 @@ const onDiscussedFilter = () => {
 const showFilterUsersPictures = () => {
   imgFilters.classList.remove('img-filters--inactive');
 
-  defaultFilter.addEventListener('click', onDefaultFilter);
-  randomFilter.addEventListener('click', onRandomFilter);
-  discussedFilter.addEventListener('click', onDiscussedFilter);
+  defaultFilter.addEventListener('click', clickDefaultFilter);
+  randomFilter.addEventListener('click', clickRandomFilter);
+  discussedFilter.addEventListener('click', clickDiscussedFilter);
 };
 
 /* Загрузка фотографий других пользователей:
@@ -96,7 +99,7 @@ const loadUsersPictures = () => {
     if (request.status === STATUS_OK) {
       photos = request.response;
 
-      addImgInDocument();
+      addImgInDocument(photos);
       showFullPicture();
       showFilterUsersPictures();
     }
